@@ -1,4 +1,4 @@
-title:            Site Title
+title:            지윤의 데이터 분석기행
 description:      Describe your website here.
 disqus_shortname:
 reading_time:     true
@@ -11,8 +11,8 @@ url:
 owner:
   name:           Jiyoon Lee
   avatar:         jiyooni.jpg
-  bio:            "Your bio goes here. It shouldn't be super long but a good sentence or two should suffice."
-  email:          you@email.com
+  bio:            "고려대학교 산업경영공학과 DMQA연구실 석사과정"
+  email:          jiyoon.lee52@gmail.com
   # Social networking links used in footer. Update and remove as you like.
   twitter:
   facebook:
