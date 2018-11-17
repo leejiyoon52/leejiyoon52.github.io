@@ -1,16 +1,12 @@
 ---
 layout: post
-title: Support Vector Regressor
-description: "Just about everything you'll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more."
-modified: 2014-12-24
+title: Support Vector Regression
+description: "Sample post with a background image CSS override."
 tags: [sample post]
 image:
-  path: /images/abstract-3.jpg
-  feature: abstract-3.jpg
-  credit: dargadgetz
-  creditlink: http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/
+  background: triangular.png
+
 ---
---
 ### 비선형 데이터를 활용한 예시
 ---
 
