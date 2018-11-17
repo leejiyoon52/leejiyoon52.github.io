@@ -2,7 +2,7 @@
 layout: post
 title: Support Vector Regression
 image:
-  background: triangular.pngs
+  background: triangular.png
 ---
 
 Kernel-based Learning: Support Vector Regression
