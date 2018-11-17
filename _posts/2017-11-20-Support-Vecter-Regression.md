@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Business Analytics
+title: Support Vector Regression
 ---
 
 Kernel-based Learning: Support Vector Regression
