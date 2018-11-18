@@ -11,9 +11,6 @@ comments: false
 
     {% if forloop.first %}
     <article>
-      {% if post.use_math %}
-      {% include mathjax_support.html %}
-      {% endif %}
       <h2 id="{{ this_year }}-ref">{{ this_year }}</h2>
       <ul>
     {% endif %}
