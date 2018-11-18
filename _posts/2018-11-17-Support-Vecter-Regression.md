@@ -38,7 +38,7 @@ y[::1] +=1*(0.5-np.random.rand(100))
 
 
 **2. Kernel function 비교**
-앞서 소개했듯이 대표적인 kernel function은 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 Hyper parameter 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 ${{1/\sigma  }^2}$을 의미합니다. 'gamma'로 치환하므로써 계산을 보다 용이하게 개선할 수 있습니다.
+앞서 소개했듯이 대표적인 kernel function은 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 Hyper parameter 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 계산을 보다 용이하게 개선할 수 있습니다.
 ```python
 def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
 
