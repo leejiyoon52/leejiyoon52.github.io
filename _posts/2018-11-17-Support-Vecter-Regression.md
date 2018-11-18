@@ -19,7 +19,7 @@ Kernel-based Learning: Support Vector Regression
 SVR의 경우 고려해야하는 Loss function과 Kernel function, 하이퍼파라미터가 다양하게 존재합니다. 따라서 이들을 변화시키며 결과를 확인해보도록 하겠습니다.
 
 
-**1. 비선형 데이터 생성**
+**1. 랜덤 데이터 생성**
 
  삼각함수를 사용하여 비선형성을 갖는 데이터를 생성하고, 일부 난수에 대해 노이즈를 추가해봅시다.
 
@@ -35,30 +35,51 @@ y[::1] +=1*(0.5-np.random.rand(100))
 생성된 데이터의 개형은 다음과 같습니다. 데이터들이 sin(X)함수를 기준으로 노이즈가 반영되어 적절히 흩어지게 되었습니다. 해당 데이터를 잘 반영하여 새로운 데이터를 잘 예측하는 회귀선을 구하고자 하는 것이 SVR의 목적이라 할 수 있습니다.
 <p align="center"><img width="500" height="auto" img src="/images/image_1.png"></p>
 <p align="center">
-<p align="center"><img width="500" height="auto" img src="/images/image_1.png"></p>
-<p align="center"> 그림1 </p>
+
 
 **2. Kernel function 비교**
-
+앞서 소개했듯이 대표적인 kernel function은 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 Hyper parameter 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 ${{1/\sigma  }^2}$을 의미합니다. 'gamma'로 치환하므로써 계산을 보다 용이하게 개선할 수 있습니다.
 ```python
-from sklearn.neighbors import NearestNeighbors, kneighbors_graph
-from sklearn.decomposition import KernelPCA
-from dijkstra import Graph, dijkstra
-import numpy as np
-import pickle
+def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
 
-def isomap(input, n_neighbors, n_components, n_jobs):
-    distance_matrix = pickle.load(open('./isomap_distance_matrix.p', 'rb'))
-    kernel_pca_ = KernelPCA(n_components=n_components,
-                                 kernel="precomputed",
-                                 eigen_solver='arpack', max_iter=None,
-                                 n_jobs=n_jobs)
-    Z = distance_matrix ** 2
-    Z *= -0.5
-    embedding = kernel_pca_.fit_transform(Z)
-    return(embedding)
+    if kernel == 'linear':                                  # Linear kernel
+        result = np.dot(xi,xj)+coef0
+    elif kernel == 'poly':                                  # Polynomial kernel
+        result = (np.dot(xi,xj)+coef0)**degree
+    elif kernel == 'rbf':                                   # RBF kernel
+        result = np.exp(-gamma*np.linalg.norm(xi-xj)**2)
+    elif kernel =='sigmoid':                                # Sigmoid kernel
+        result = np.tanh(gamma*np.dot(xi,xj)+coef0)
+    else:                                                   # Dot product
+        result = np.dot(xi,xj)
+
+    return result
 ```
+두 원소값에 대한 스칼라 ${{K(x_i,x_j)}}$을 구할 수 있으며, 모든 원소간 ${{K}}$값을 구해 Gram matrix를 도출해야합니다.    
+```python
+def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
+    X = np.array(X,dtype=np.float64)
+    mat = []
+    for i in X:
+        row = []
+        for j in X:
+            if kernel=='linear':
+                row.append(kernel_f(i, j, kernel = 'linear', coef0))
+            elif kernel=='poly':
+                row.append(kernel_f(i, j, kernel = 'poly', coef0, degree))
+            elif kernel=='rbf':
+                row.append(kernel_f(i,j,kernel = 'rbf', gamma))
+            elif kernel =='sigmoid':
+                row.append(kernel_f(i,j,kernel = 'sigmoid', coef0, gamma))    
+            else:
+                row.append(np.dot(i,j))
+        mat.append(row)
+
+    return mat
+```
+<p align="center"><img width="650" height="auto" img src="/images/image_2.png"></p>
+<p align="center">
 *  MNIST 데이터 활용하여 모델 적용
 
 ```python
