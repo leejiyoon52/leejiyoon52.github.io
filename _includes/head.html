@@ -6,6 +6,10 @@
   {% include mathjax_support.html %}
 {% endif %}
 
+{% if post.use_math %}
+  {% include mathjax_support.html %}
+{% endif %}
+
 {% if site.owner.twitter %}<!-- Twitter Cards -->
 {% if page.image.feature %}<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{ site.url }}/images/{{ page.image.feature }}">
