@@ -6,6 +6,7 @@ modified: 2018-11-17
 image:
   path: /images/abstract-7.jpg
   feature: abstract-7.jpg
+use_math: true
 ---
 
 Kernel-based Learning: Support Vector Regression
