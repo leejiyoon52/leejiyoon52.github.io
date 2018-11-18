@@ -5,6 +5,9 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 {% include head.html %}
+{% if page.use_math %}
+{% include mathjax_support.html %}
+{% endif %}
 </head>
 
 <body id="page" {% if page.image.feature %}class="feature"{% endif %}>
@@ -53,9 +56,6 @@
 </div><!-- /.footer-wrapper -->
 
 {% include scripts.html %}
-<script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 </body>
 </html>
