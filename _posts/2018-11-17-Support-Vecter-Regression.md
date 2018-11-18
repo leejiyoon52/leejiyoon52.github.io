@@ -57,7 +57,7 @@ def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
     return result
 ```
 
-두 원소값에 대한 스칼라 $K(x_i,x_j)$을 구할 수 있으며, 모든 원소간 $K$값을 구해 Gram matrix를 도출해야합니다.
+두 원소값에 대한 스칼라 을 구할 수 있으며, 모든 원소간 값을 구해 Gram matrix를 도출해야합니다.
 
 ```python
 def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
