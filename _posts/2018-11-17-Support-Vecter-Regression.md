@@ -125,7 +125,7 @@ $$
 \frac { \partial L }{ \partial \xi^{ * } }= C - { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * } = 0 \quad \Rightarrow \quad \boldsymbol{ C = ({ \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * })} \tag{3}
 $$
 
-미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier $ { \alpha }_{i}$와 $ { \alpha }_{i}^{* }$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 $ { \alpha }_{i}$와 $ { \alpha }_{i}^{* }$에 대한 식 Lagrangian dual problem으로 정리합니다.
+미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier $ { \alpha }_{i} $와 $ { \alpha }_{i}^{* } $값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 $ { \alpha }_{i} $와 $ { \alpha }_{i}^{* } $에 대한 식 Lagrangian dual problem으로 정리합니다.
 
 #### Lagrangian Dual Problem
 
@@ -138,7 +138,7 @@ $$
  s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
  $$
 
-Lagrangian dual problem으로 재구성한 결과 $ { \alpha }_{i}$와 $ { \alpha }_{i}^{* }$ 로 이루어져있는 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 최적화 quadratic  optimization을 통해 간편하게 $ { \alpha }_{ i },{ \alpha }_{ i }^{ * } $를 도출할 수 있습니다. 이렇게 구한 값 $ W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i } $을 $f(x)= Wx + b$ 에 대입해볼까요?
+Lagrangian dual problem으로 재구성한 결과 $ { \alpha }_{i} $와 $ { \alpha }_{i}^{* } $ 로 이루어져있는 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 최적화 quadratic  optimization을 통해 간편하게 $ { \alpha }_{ i },{ \alpha }_{ i }^{ * } $를 도출할 수 있습니다. 이렇게 구한 값 $ W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i } $을 $f(x)= Wx + b$ 에 대입해볼까요?
 
 
 
