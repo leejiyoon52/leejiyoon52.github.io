@@ -106,25 +106,37 @@ $$
  {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
 $$
 
-Lagrangian Primal problem으로 재구성한 결과 역시 convex하고, 연속적인 QP(quadratic program)입니다. 이 경우, KKT조건에 의해 목적식의 미지수에 대해 미분한 값이 0일때 최소값을 갖게됩니다. 따라서 목적식의 미지수 $ b, W, { \xi } $ 에 대해 각각 미분해 봅시다.
+Lagrangian Primal problem으로 재구성한 결과 역시 convex하고, 연속적인 QP(quadratic program)입니다. 이 경우, KKT조건에 의해 목적식의 미지수에 대해 미분 값이 0일때 최소값을 갖게됩니다. 따라서 목적식의 미지수 $ b, W, { \xi } $ 에 대해 각각 미분해 봅시다.
 
 
 #### Take a derivative
 
 $$
-\frac { \partial L }{ \partial b }= \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0 
+\frac { \partial L }{ \partial b }= \boldsymbol{ \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0 }
 $$
 
 
 $$
-\frac { \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_i} = 0 \quad \Rightarrow \quad  W = \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_i}
+\frac { \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_i} = 0 \quad \Rightarrow \quad \boldsymbol{ W = \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_i}}
 $$
 
 
 $$
-\frac { \partial L }{ \partial \xi^{ * } }= C - { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * } = 0 \quad \Rightarrow \quad C = ({ \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * })
+\frac { \partial L }{ \partial \xi^{ * } }= C - { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * } = 0 \quad \Rightarrow \quad \boldsymbol{ C = ({ \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * })}
 $$
 
+미지수의 미분 값이 0일때 위 3개의 조건을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier $ { \alpha }_{i}$와 $ { \alpha }_{i}^{* }$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 $ { \alpha }_{i}$와 $ { \alpha }_{i}^{* }$에 대한 식 Lagrangian dual problem으로 정리합니다.
+
+#### Lagrangian Dual Problem
+
+ $$
+  { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+ $$
+
+
+ $$
+ s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
+ $$
 
 
 
