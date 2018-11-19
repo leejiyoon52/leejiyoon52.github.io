@@ -107,18 +107,25 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 
 $$
-\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^{ n }{ { \xi  }_{ i }+{\xi}_{i}^{*}}
+\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})}
+$$
+
+$$
+\\s.t. \quad    ({ w }^{ T }{ x }_{ i }+b)-{ y }_{ i }\le {\epsilon}+{ \xi  }_{ i }
+$$
+
+$$
+\quad  \quad  { y }_{ i }-({ w }^{ T }{ x }_{ i }+b)\le {\epsilon}+{ \xi  }_{ i }^{*}
+$$
+
+$$
+\\ { \xi  }_{ i }, { \xi  }_{ i }^{*}\ge 0
 $$
 
 위의 목적식을 두 부분으로 나눠서 살펴보겠습니다.<br>
 
-$\min { \frac { 1 }{ 2 } { \left\| w \right\|  }_{ 2 }^{ 2 } }$ 은 마진의 역수에 대한 최소화이므로,
-마진을 최대화하는 것과 같습니다.<br>
+$\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2 } }$ 은 <br>
 
-$\min C\sum _{i=1}^{n}{\xi_i}$ 은 C-svm 이 Margin을 벗어나는 것을 허용하지만 그로 인해 생기는
+$\min C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})}$ 은 C-svm 이 Margin을 벗어나는 것을 허용하지만 그로 인해 생기는
 페널티를 최소화하고자 하는 것을 알 수 있게 해주는 부분입니다.<br>
 <br>
-
-$$
-s.t. \quad { y }_{ i }({ w }^{ T }{ x }_{ i }+b)\ge 1-{ \xi  }_{ i },\quad { \xi  }_{ i }\ge 0
-$$
