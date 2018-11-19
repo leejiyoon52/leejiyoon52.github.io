@@ -122,7 +122,7 @@ $$
 
 
 
-##Primal Lagrangian
+## Primal Lagrangian
 
 
 
@@ -141,10 +141,18 @@ $$
 <br>
 
 $$
-\frac {  \partial }{ 2 }{ \partial }
+\frac {  \partial L }{ \partial b }= \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0
 $$
 
 
+$$
+\frac {  \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ * }-{ \alpha }_{ i })x_i} = 0
+$$
+
+
+$$
+\frac {  \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ * }-{ \alpha }_{ i })x_i} = 0
+$$
 #### **3. Loss function 비교**
 
-###Primal Lagrangian
+#### Primal Lagrangian
