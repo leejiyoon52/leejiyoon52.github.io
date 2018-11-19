@@ -25,33 +25,35 @@ Kernel-based Learning: Support Vector Regression
 
 그림(B)의 회귀선은 학습 데이터에는 매우 적합한 회귀선을 구했지만, 새로 들어올 미래 데이터가 조금만 변화하게 되어도 예측 값이 민감하게 변하게 됩니다. 반면 그림(A)에서의 회귀선은 학습데이터의 설명력은 낮아졌지만, 미래 데이터의 변화에 예측 값의 변화가 보다 안정적(robust)입니다.
 
-이처럼 일반 선형회귀 모델에서는 모형이 그림(B)와 같이 과적합(overfitting)되면 회귀 계수W의 크기도 증가하기 때문에 추가적으로 제약을 부여하여 회귀계수의 크기가 너무 커지지 않도록 정규화(regularized) 제약 조건을 부여하여 계수의 크기를 제한합니다. 대표적으로 릿지 회귀모형(Ridge regression)이 있습니다. 릿지 회귀모형의 손실함수 식은 아래와 같이 표현됩니다.
+이처럼 일반 선형회귀 모델에서는 모형이 그림(B)와 같이 과적합(overfitting)되면 회귀 계수W의 크기도 증가하기 때문에 추가적으로 제약을 부여하여 회귀계수의 크기가 너무 커지지 않도록 정규화(regularized)를 위한 Penalty조건식을 부여하여 계수의 크기를 제한합니다. 대표적으로 릿지 회귀모형(Ridge regression)이 있습니다. 릿지 회귀모형의 손실함수 식은 아래와 같이 표현됩니다.
 
 $$
-L_{ridge} = \min  \frac { 1 }{ 2 } \sum _{ i=1 }^ n ({ y }_{i} - { f(x_{i}) } )^2 + {\lambda}{ \left\| w \right\|  }^{ 2}
+L_{ridge} = \min  \underbrace{\frac { 1 }{ 2 } \sum _{ i=1 }^ n ({ y }_{i} - { f(x_{i}) } )^2}_\text{ loss funciton }  + {\lambda}\overbrace{{ \left\| w \right\|  }^{ 2}}^{\text{Robustness}}
 $$
 
 Ridge 손실함수 수식에 담긴 의미를 해석해보면, "실제값과 추정값의 차이를 작도록 하되, 회귀계수 크기가 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
 
 <br>
 
-이는 오늘의 주제 **SVR(Support Vector Regression)** 의 목적과 부합합니다. 다만 차이가 있다면 정규화(regularized)를 적용시키는 수식이 다르며, 아래와 같이 표현할 수 있습니다.
+이는 오늘의 주제 **SVR(Support Vector Regression)** 의 목적과 유사합니다. 다만 관점의 차이가 있다면 Penalty를 적용시키는 식이 반대이며, 아래와 같이 표현할 수 있습니다.
 
 
 $$
- L_{SVR} = \min  { \left\| w \right\|  }^{ 2} + {\lambda} (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}  
+ L_{SVR} = \min  \overbrace{ { \left\| w \right\|  }^{ 2}} ^{\text{Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
 $$
 
-SVR 손실함수 수식에 담긴 의미를 해석해보면, "회귀계수 크기를 작도록 하되, 실제값과 추정값의 차이를 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
+SVR 손실함수 수식에 담긴 의미를 해석해보면, "회귀계수 크기를 작게하여 회귀식을 평평하게 만들8, 실제값과 추정값의 차이를 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
 
+---
 
 ### SVR Loss function
 
 
-자, 이제 SVR의 손실함수를 ${\epsilon}$-insensitive함수를 사용한 SVR식으로 바꾸어 표현해보겠습니다.
+자, 이제 SVR의 손실함수를 ${\epsilon}$-insensitive함수를 사용한 SVR식으로 표현해 보았습니다. 그러자 갑자기 식이 엄청 복잡해 보입니다. 그림을 통해 도대체 ${ \epsilon }$  와 ${ \xi  }$가 무엇인지에 대해 알아봅시다.
+
 
 $$
-L_{SVR} =\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )\quad(1)}
+L_{SVR} =\min \overbrace{ \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} }^{\text{Robustness}} +C \underbrace{\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}}_\text{ loss funciton } \quad(1)
 $$
 
 $$
@@ -68,7 +70,19 @@ $$
 
 
 
-<p align="center"><img width="600" height="auto" img src="/images/image_67.png"></p>
+<p align="center"><img width="600" height="auto" img src="/images/image_68.png"></p>
+
+
+* ${ \epsilon }$ : 회귀식 위아래 사용자가 지정한 값(튜브) $ \propto $ 허용하는 노이즈 정도
+* ${ \xi  }$  : 튜브 밖에 벗어난 거리 (회귀식 위쪽)
+* ${ \xi  }^{ * }$ : 튜브 밖에 벗어난 거리 (회귀식 아래쪽)
+
+SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,\epsilon)$만큼 튜브를 생성합니다. 그리고 오른쪽 그림에서처럼 튜브내에 실제 값이 있다면 예측값과 차이가 있더라도 오차가 없다고 가정하여 에러를 0으로 주고, 튜브 밖에 실제 값이 있다면 에러를 부여하게 됩니다.
+
+따라서 SVR의 특징을 정리해보면 다음과 같습니다.
+
+***SVR은 데이터에 노이즈가 있다고 가정하며, 이러한 점을 고려하여 노이즈가 있는 실제 값을 완벽히 추정하는것을 추구하지 않는다. 따라서 적정 범위(${ \epsilon }$) 내에서는 실제값과 예측값의 차이를 허용한다.***
+
 
 
 ---
