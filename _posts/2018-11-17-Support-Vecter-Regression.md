@@ -138,6 +138,11 @@ $$
  {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
 $$
 
+<br>
+
+$$
+\frac {  \partial }{ 2 }{ \partial }
+$$
 
 
 #### **3. Loss function 비교**
