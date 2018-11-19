@@ -95,14 +95,15 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 #### **3. Loss function 비교**
 
-##### Loss function
+#### Loss function
 흔히 선형회귀문제에서는 손실함수(Loss function)를 MSE(Mean squared error)로 정의하여 사용합니다. 하지만
 
 <br />
-##### Loss function hyperparameter
+#### Loss function hyperparameter
 
 기존의 선형회귀와 가장 큰 관점차이는 손실함수(Loss function)에 Penalty(C)를 부여한다는 점입니다.
 
+#### Loss function
 
 $$
 \min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}
@@ -122,8 +123,7 @@ $$
 
 
 
-## Primal Lagrangian
-
+#### Primal Lagrangian
 
 
 $$
@@ -138,21 +138,48 @@ $$
  {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
 $$
 
-<br>
+
+#### Take a derivative
 
 $$
-\frac {  \partial L }{ \partial b }= \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0
-$$
-
-
-$$
-\frac {  \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ * }-{ \alpha }_{ i })x_i} = 0
+\frac { \partial L }{ \partial b }= \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0
 $$
 
 
 $$
-\frac {  \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ * }-{ \alpha }_{ i })x_i} = 0
+\frac { \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }^{ * }-{ \alpha }_{ i })x_i} = 0
 $$
-#### **3. Loss function 비교**
 
-#### Primal Lagrangian
+
+$$
+\frac { \partial L }{ \partial \xi^{( * )} }= C - ({ \alpha }_{i}^{( * )}-{ \eta }_{ i }^{( * )})
+$$
+
+
+#### Dual Lagrangian Problem
+$$
+ { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+$$
+
+
+$$
+s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
+$$
+
+#### Decision function
+
+$$
+  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_{ i } \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x^{T}_{ i }x + b
+$$
+
+
+#### Dual Lagrangian problem with Kernel trick
+$$
+ { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+$$
+
+#### Decision function
+
+$$
+  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(x_{ i }) \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i }){K(x_{ i }x_{ j })} + b
+$$
