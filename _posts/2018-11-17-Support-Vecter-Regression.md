@@ -21,7 +21,7 @@ Kernel-based Learning: Support Vector Regression
 회귀 알고리즘은 데이터가 주어졌을 때 데이터를 잘 설명하는 선을 찾고자 합니다.
 어떠한 선이 데이터를 잘 설명하는 선이 될까요?
 
-<p align="center"><img width="500" height="auto" img src="/images/image66.png"></p>
+<p align="center"><img width="600" height="auto" img src="/images/image66.png"></p>
 
 그림(B)의 회귀선은 학습 데이터에는 매우 적합한 회귀선을 구했지만, 새로 들어올 미래 데이터가 조금만 변화하게 되어도 예측 값이 민감하게 변하게 됩니다. 반면 그림(A)에서의 회귀선은 학습데이터의 설명력은 낮아졌지만, 미래 데이터의 변화에 예측 값의 변화가 보다 안정적(robust)입니다.
 
@@ -31,23 +31,27 @@ $$
 L_{ridge} = \min  \frac { 1 }{ 2 } \sum _{ i=1 }^ n ({ y }_{i} - { f(x_{i}) } )^2 + {\lambda}{ \left\| w \right\|  }^{ 2}
 $$
 
-수식에 담긴 의미를 해석해보면, "실제값과 추정값의 차이를 작도록 하되, 회귀계수 크기가 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
+Ridge 손실함수 수식에 담긴 의미를 해석해보면, "실제값과 추정값의 차이를 작도록 하되, 회귀계수 크기가 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
 
 <br>
 
-이는 오늘의 주제 **SVR(Support Vector Regression)** 의 목적과 부합합니다. 다만 차이가 있다면 주요하게 생각하는 수식이 다르며, 아래와 같이 표현할 수 있습니다.
+이는 오늘의 주제 **SVR(Support Vector Regression)** 의 목적과 부합합니다. 다만 차이가 있다면 정규화(regularized)를 적용시키는 수식이 다르며, 아래와 같이 표현할 수 있습니다.
 
 
 $$
  L_{SVR} = \min  { \left\| w \right\|  }^{ 2} + {\lambda} (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}  
 $$
 
-수식에 담긴 의미를 해석해보면, "회귀계수 크기를 작도록 하되, 실제값과 추정값의 차이를 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
+SVR 손실함수 수식에 담긴 의미를 해석해보면, "회귀계수 크기를 작도록 하되, 실제값과 추정값의 차이를 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
 
 
-##### SVR Loss function
+### SVR Loss function
+
+
+자, 이제 SVR의 손실함수를 ${\epsilon}$-insensitive함수를 사용한 SVR식으로 바꾸어 표현해보겠습니다.
+
 $$
-L_{SVR} =\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}
+L_{SVR} =\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )\quad(1)}
 $$
 
 $$
@@ -55,12 +59,16 @@ $$
 $$
 
 $$
-y_i-(w^Tx_i +b) \le {\epsilon}+{ \xi }_i^*
+\quad \quad \quad  y_i-(w^Tx_i +b) \le {\epsilon}+{ \xi }_i^*
 $$
 
 $$
-\\ { \xi  }_{ i }, { \xi  }_{ i }^* \ge {0}
+{ \xi  }_{ i }, { \xi  }_{ i }^* \ge {0}
 $$
+
+
+
+<p align="center"><img width="600" height="auto" img src="/images/image_67.png"></p>
 
 
 ---
@@ -90,7 +98,9 @@ y[::1] +=1*(0.5-np.random.rand(100))
 
 #### **2. Kernel function 비교**
 
+
 #####Kernel function
+
 
 앞서 소개했듯이 대표적인 커널함수(kernel function)는 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 하이퍼 파라미터 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 연산을 보다 용이하게 개선할 수 있습니다.
 
