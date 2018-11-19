@@ -109,6 +109,21 @@ $$
 Lagrangian Primal problem으로 재구성한 결과 역시 convex하고, 연속적인 QP(quadratic program)입니다. 이 경우, KKT조건에 의해 목적식의 미지수에 대해 미분한 값이 0일때 최소값을 갖게됩니다. 따라서 목적식의 미지수 $ b, W, { \xi } $ 에 대해 각각 미분해 봅시다.
 
 
+#### Take a derivative
+
+$$
+\frac { \partial L }{ \partial b }= \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0 
+$$
+
+
+$$
+\frac { \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_i} = 0 \quad \Rightarrow \quad  W = \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })x_i}
+$$
+
+
+$$
+\frac { \partial L }{ \partial \xi^{ * } }= C - { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * } = 0 \quad \Rightarrow \quad C = ({ \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * })
+$$
 
 
 
