@@ -56,7 +56,7 @@ SVR 손실함수 수식에 담긴 의미를 해석해보면, "회귀계수 크�
 
 
 $$
-L_{SVR} =\min \overbrace{ \frac { 1 }{ 2 } { \left\| w \right\| }^{ 2} }^{\text{Robustness}} +C \underbrace{\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}}_\text{ loss funciton } \quad(1)
+L_{SVR} =\min \overbrace{ \frac { 1 }{ 2 } { \left\| w \right\| }^{ 2} }^{\text{Robustness}} +C \underbrace{\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}}_\text{ loss funciton }
 $$
 
 $$
@@ -88,9 +88,9 @@ SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,
 ***"SVR은 데이터에 노이즈가 있다고 가정하며, 이러한 점을 고려하여 노이즈가 있는 실제 값을 완벽히 추정하는것을 추구하지 않는다. 따라서 적정 범위(2${ \epsilon }$) 내에서는 실제값과 예측값의 차이를 허용한다."*** <br><br>
 
 
-#### Lagrangian Primal
+#### Lagrangian Primal problem
 
-앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이를 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier ${ \alpha }_{i}^* $, ${ \eta }_{i}^* $를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal 문제로 변형합니다. 
+앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier ${ \alpha }_{i}^{* }$, ${ \eta }_{i}^{* }$를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
 
 
 $$
@@ -105,6 +105,7 @@ $$
  {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
 $$
 
+Lagrangian Primal problem으로 재구성한 결과 역시 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 목적식의 미지수에 대해 편미분한 값이 0일때 최소값을 갖게됩니다. 
 
 ---
 ### 비선형 데이터를 활용한 코드 구현 예시
