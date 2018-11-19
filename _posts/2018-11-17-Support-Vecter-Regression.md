@@ -104,8 +104,6 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 기존의 선형회귀와 가장 큰 관점차이는 손실함수(Loss function)에 Penalty(C)를 부여한다는 점입니다.
 
 
-
-
 $$
 \min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^{*})}
 $$
@@ -123,20 +121,25 @@ $$
 $$
 
 
-###Primal Lagrangian
+
+##Primal Lagrangian
 
 
-$$
-{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})} - \sum _{ i=1 }^{ n }{ ({\eta}_{i}{ \xi  }_{ i }+{\eta}_{i}^{*}{\xi}_i^{*})}
-$$
 
 $$
-\\-\sum _{ i=1 }^{ n }{ {\alpha}_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ {\alpha}_{i}^{*}({ \epsilon }+{\xi}_{i}^{*}-{y}_{i}-{W}^{T}{x}_{i}+b)}
+{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})} - \sum _{ i=1 }^{ n }{ ({\eta}_{i}{ \xi  }_{ i }+{\eta}_{i}^{*}{\xi}_i^* )}
 $$
 
 $$
- {\alpha}_{i}^{*},{\eta}_{i}^{*}\ge 0
+\\-\sum _{ i=1 }^{ n }{ {\alpha}_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ {\alpha}_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}-{W}^{T}{x}_{i}+b)}
 $$
 
+$$
+ {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
+$$
+
+
+
+#### **3. Loss function 비교**
 
 ###Primal Lagrangian
