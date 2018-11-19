@@ -42,7 +42,7 @@ y[::1] +=1*(0.5-np.random.rand(100))
 
 #####Kernel function
 
-앞서 소개했듯이 대표적인 커널함수(kernel function)는 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 하이퍼 파라미터 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 계산을 보다 용이하게 개선할 수 있습니다.
+앞서 소개했듯이 대표적인 커널함수(kernel function)는 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 하이퍼 파라미터 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 연산을 보다 용이하게 개선할 수 있습니다.
 
 ```python
 def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
@@ -73,8 +73,8 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
     for i in X:
         row = []
         for j in X:
-            if kernel=='linear':
-                row.append(kernel_f(i, j, kernel = 'linear', coef0))
+            if kernel=='linear':           
+                row.append(kernel_f(i, j, kernel = 'linear', coef0))   
             elif kernel=='poly':
                 row.append(kernel_f(i, j, kernel = 'poly', coef0, degree))
             elif kernel=='rbf':
@@ -96,9 +96,13 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 #### **3. Loss function 비교**
 
 ##### Loss function
+흔히 선형회귀문제에서는 손실함수(Loss function)를 MSE(Mean squared error)로 정의하여 사용합니다. 하지만
 
 <br />
 ##### Loss function hyperparameter
+
+기존의 선형회귀와 가장 큰 관점차이는 손실함수(Loss function)에 Penalty(C)를 부여한다는 점입니다.
+
 *  MNIST 데이터 활용하여 모델 적용
 
 ```python
