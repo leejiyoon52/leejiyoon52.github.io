@@ -105,7 +105,7 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 
 $$
-\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^{*})}
+\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}
 $$
 
 $$
@@ -127,11 +127,11 @@ $$
 
 
 $$
-{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})} - \sum _{ i=1 }^{ n }{ ({\eta}_{i}{ \xi  }_{ i }+{\eta}_{i}^{*}{\xi}_i^* )}
+{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^* )} - \sum _{ i=1 }^{ n }{ ({ \eta }_{i}{ \xi  }_{ i }+{\eta}_{i}^{* }{\xi}_i^* )}
 $$
 
 $$
-\\-\sum _{ i=1 }^{ n }{ {\alpha}_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ {\alpha}_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}-{W}^{T}{x}_{i}+b)}
+\\-\sum _{ i=1 }^{ n }{ { \alpha }_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ { \alpha }_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}-{W}^{T}{x}_{i}+b)}
 $$
 
 $$
