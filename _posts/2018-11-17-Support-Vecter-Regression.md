@@ -28,7 +28,7 @@ Kernel-based Learning: Support Vector Regression
 이처럼 일반 선형회귀 모델에서는 모형이 그림(B)와 같이 과적합(overfitting)되면 회귀 계수W의 크기도 증가하기 때문에 추가적으로 제약을 부여하여 회귀계수의 크기가 너무 커지지 않도록 정규화(regularized)를 위한 Penalty조건식을 부여하여 계수의 크기를 제한합니다. 대표적으로 릿지 회귀모형(Ridge regression)이 있습니다. 릿지 회귀모형의 손실함수 식은 아래와 같이 표현됩니다.
 
 $$
-L_{ridge} = \min  \underbrace{\frac { 1 }{ 2 } \sum _{ i=1 }^ n ({ y }_{i} - { f(x_{i}) } )^2}_\text{ loss funciton }  + {\lambda}\overbrace{{ \left\| w \right\|  }^{ 2}}^{\text{Robustness}}
+L_{ridge} = \min  \underbrace{\frac { 1 }{ 2 } \sum _{ i=1 }^ n ({ y }_{i} - { f(x_{i}) } )^2}_\text{ loss funciton }  + {\lambda} \overbrace{{ \left\| w \right\|  }^{ 2}} ^{\text{Robustness}}
 $$
 
 Ridge 손실함수 수식에 담긴 의미를 해석해보면, "실제값과 추정값의 차이를 작도록 하되, 회귀계수 크기가 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
