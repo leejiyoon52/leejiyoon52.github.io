@@ -128,4 +128,12 @@ $\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2 } }$ 은 <br>
 
 $\min C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})}$ 은 C-svm 이 Margin을 벗어나는 것을 허용하지만 그로 인해 생기는
 페널티를 최소화하고자 하는 것을 알 수 있게 해주는 부분입니다.<br>
-<br>
+
+###Primal Lagrangian
+$$
+{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^{*})} - \sum _{ i=1 }^{ n }{ ({\eta}_{i}{ \xi  }_{ i }+{\eta}_{i}^{*}{\xi}_{i}^{*})}\\-
+$$
+$$
+{\min{ L_{p}(w,b,{ \alpha }_{ i }) } } =\frac { 1 }{ 2 } { \left| w \right| }^{ 2 }-\sum { i=1 }^{ n }{ { \alpha }_{ i }({ y }_{ i }
+({ w }^{ T }{ x }_{ i }+b)-1) }
+$$
