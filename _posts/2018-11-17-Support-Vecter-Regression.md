@@ -73,7 +73,7 @@ $$
 
 
 
-<p align="center"><img width="600" height="auto" img src="/images/image_68.png"></p>
+<p align="center"><img width="700" height="auto" img src="/images/image_67.png"></p>
 
 
 * ${ \epsilon }$ : 회귀식 위아래 사용자가 지정한 값 $ \propto $ 허용하는 노이즈 정도
@@ -82,7 +82,6 @@ $$
 
 SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,\epsilon)$만큼 튜브를 생성하여, 오른쪽 그림에서처럼 튜브내에 실제 값이 있다면 예측값과 차이가 있더라도 오차가 없다고 가정하여 penalty를 0으로 주고, 튜브 밖에 실제 값이 있다면 C의 배율로 penalty를 부여하게 됩니다.
 
-##여기에 SVM과 비교해도 좋을 듯 St.
 
 결과적으로, SVR의 특징을 정리해보면 다음과 같습니다.
 
@@ -91,7 +90,7 @@ SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,
 
 #### Lagrangian Primal problem
 
-앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
+앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형함으로써 이런 한계를 극복하게 됩니다.
 
 
 $$
@@ -158,7 +157,7 @@ $$
 
 $$
 \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
-\quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv} \tag{4}
+\quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} \tag{4}
 $$
 
 $KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
@@ -183,18 +182,12 @@ $$
 $b$를 구하기 앞서 회귀식을 구축하는데 사용되는 **support vector** 를 구해야합니다. 식(5)와(7)을사용해서 구해보도록 하겠습니다. 먼저 $${ \alpha }_{i} { \neq } 0  $$ 이라면 $$({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0$$을 만족해야합니다. 이를 만족한다는 것은 해당 데이터가 튜브 boundary위에 딱 있음을 의미하는데요, 이경우 튜브 밖으로 나간 값이 없으므로 식(7)의 $${\xi}_{i } = 0$$이라 할 수 있습니다. 그렇게 되면 자연스럽게 $$(C- { \alpha }_{i}){ \neq } 0 $$가 성립합니다. 따라서 이경우는 튜브선 위 혹은 그 밖에 있는 데이터를 의미합니다. 반대로 $${ \alpha }_{i}=0$$ 이라면, $${\xi}_{i } { \neq } 0$$ 라면 $$(C- { \alpha }_{i}) = 0 $$이 되어야 합니다. 그렇게 되면$$C = { \alpha }_{i} = 0 $$가 되어 적합하지 않습니다. 식(6),(8)에서도 동일한 결과를 구할 수 있으며 결과적으로 SVR에서의
  **support vector는 튜브선을 포함하여 바깥쪽에 예측이 된 $x_{sv}$**  입니다.
 
-이제 진짜 $b$를 구해봅시다.
-
-결론적으로 아래의 조건을 충족하는 $$x$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $$b$$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
-
+이제 진짜 $b$를 구해봅시다.결론적으로 조건$$0<{ \alpha }_{i} <C$$ 와 $$0<{ \alpha }_{i}^{ * } <C$$을 충족하는 $$x_{sv}$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. 즉, 다음과 같이 유도됩니다.
 $$
-0<{ \alpha }_{i} <C
+\quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv}
 $$
+여기서 support vector의 갯수가 많다면 추정된 $$b$$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
 
-
-$$
-0<{ \alpha }_{i}^{ * } <C
-$$
 
 
 자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 하지만 지금까지 소개한 SVR 회귀식은 **선형성** 만을 띄고 있습니다. 하지만 선형성만으로 데이터를 잘 표현하지 못하는 경우가 있기마련입니다. 이런 경우 매핑함수(mapping function)를 사용하여 문제를 해결합니다. 해당 내용을 더욱 자세히 알아봅시다.
@@ -211,7 +204,7 @@ $$
 p << q
 $$
 
-<p align="center"><img width="600" height="auto" img src="/images/image_69.png"></p>
+<p align="center"><img width="600" height="auto" img src="/images/image_80.png"></p>
 
 결과적으로, 매핑함수를 사용한 SVR의 핵심 내용 정리해보면 다음과 같습니다.
 
@@ -223,23 +216,30 @@ $$
 
 그런데 고차원으로 표현하는 과정은 매우 연산량이 큽니다. 데이터를 고차원으로 매핑하고, 데이터 요소끼리 내적해야하기 때문입니다. 다행히도 SVR은 상대적으로 저차원인 원공간에서 내적을 하고, 고차원공간으로 매핑함으로써 간단히 연산할 수 있는 **kernel trick** 을 도입했습니다. 따라서 트릭을 가능하게 하는 커널함수(kernel function)을 사용합니다.
 <br>
-따라서 다시 오랜만에 Lagrangian Dual Problem을
+따라서 다시 오랜만에 Lagrangian Dual Problem 목적식 으로 돌아가봅시다.
 
+$$
+{ { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{ \epsilon } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+$$
+해당 식에서 ${x^{T}_{ i }x_{ j }}$에 커널 함수를 사용하여 아래 식과 같이  ${K(x_{ i }x_{ j })}$ 으로 표현하며, 고차원 공간으로 변형해줍니다.
 
 #### Dual Lagrangian problem with Kernel trick
 
 
 $$
- { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+{ { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
 $$
 
 
 #### Decision function
 
+$$
+\quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
+$$
 
-$$
-  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
-$$
+이렇게 구해진 회귀식은 선형으로 수식화했음에도 불구하고, 비선형성을 보여주게됩니다.
+
+
 
 
 ---
@@ -331,7 +331,7 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 ##### Loss function
 앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다.
 
-<p align="center"><img width="650" height="auto" img src="/images/image_4.png"></p>
+<p align="center"><img width="650" height="auto" img src="/images/lossfun.png"></p>
 <p align="center"><img width="650" height="auto" img src="/images/image_3.png"></p>
 각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다.</p>
 
