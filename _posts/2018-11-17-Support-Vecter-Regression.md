@@ -91,15 +91,16 @@ SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,
 
 #### Lagrangian Primal problem
 
-앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier $ { \alpha }_{ i }^{ * }, { \eta }_{ i }^{ * } $를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
+앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier $ {{ \alpha }_{ i }}^{ * }, {{ \eta }_{ i }}^{ * } $를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
 
 
 $$
-{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^* )} - \sum _{ i=1 }^{ n }{ ({ \eta }_{i}{ \xi  }_{ i }+{\eta}_{i}^{* }{\xi}_i^* )}
+{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^* )} - \sum _{ i=1 }^{ n }{ ({ \eta }_{i}{ \xi  }_{ i }+{\eta}_{i}^{* }{\xi}_i^* )}\square
 $$
 
 $$
 \\-\sum _{ i=1 }^{ n }{ { \alpha }_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ { \alpha }_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}+{W}^{T}{x}_{i}+b)}
+
 $$
 
 $$
