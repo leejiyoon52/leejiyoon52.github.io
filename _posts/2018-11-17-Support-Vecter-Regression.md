@@ -13,7 +13,7 @@ image:
 Kernel-based Learning: Support Vector Regression
 =======
 
-해당 포스트에서는 대표적인 분류 알고리즘 SVM에서 소개된 손실함수를 도입하여 회귀식을 구성하는 **SVR(Support Vector Regression)** 에 대해 소개하겠습니다. 고려대학교 강필성 교수님의 Business Analytics강의와 김성범 교수님의 Forecast model강의를 바탕으로 작성하였습니다.
+해당 포스트에서는 대표적인 분류 알고리즘 SVM에서 소개된 손실함수를 도입하여 회귀식을 구성하는 **SVR(Support Vector Regression)** 에 대해 소개하겠습니다. 고려대학교 강필성 교수님의 Business Analytics강의와 김성범 교수님의 Forecast model강의를 바탕으로 작성하였으며, 코딩 구현에는 `link: https://www.youtube.com/watch?v=zlv2s_mKdb4&index=5&list=PLetSlH8YjIfXHbqJmguPdw1H7BmZPy6SS` 강의를 참고하였습니다.
 
 
 ### Regression
@@ -193,11 +193,11 @@ $$
 $$
 
 
-자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 하지만 지금까지 소개한 SVR 회귀식은 **선형성** 만을 띄고 있습니다. 하지만 선형성만으로 데이터를 잘 표현하지 못하는 경우가 있기마련입니다. 이런 경우 커널함수(Kernel function)를 사용하여 문제를 해결합니다. 해당 내용을 더욱 자세히 알아봅시다.
+자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 하지만 지금까지 소개한 SVR 회귀식은 **선형성** 만을 띄고 있습니다. 하지만 선형성만으로 데이터를 잘 표현하지 못하는 경우가 있기마련입니다. 이런 경우 매핑함수(mapping function)를 사용하여 문제를 해결합니다. 해당 내용을 더욱 자세히 알아봅시다.
 
 ### Support Vector Regression using Kernel function
 
-하단의 그림 (C)와 같이 데이터를 잘 표현하기 위해 비선형의 회귀식을 구해야하는 경우 SVR에서는 SVM과 동일하게 커널함수(Kernel function)개념을 사용하여 해결합니다. 커널 함수를 통해 데이터 관측치들을 더 높은 차원으로 변환시켜 선형으로 표현가능하게 해보자는 것입니다.
+하단의 그림 (C)와 같이 데이터를 잘 표현하기 위해 비선형의 회귀식을 구해야하는 경우 SVR에서는 SVM과 동일하게 매핑함수(mapping function)개념을 사용하여 해결합니다. 매핑 함수를 통해 데이터 관측치들을 더 높은 차원으로 변환시켜 선형으로 표현가능하게 해보자는 것입니다.
 
 $$
 x = (x_1, x_2, ... x_p) \Rightarrow {\phi}(x) = z = (z_1, z_2, ... x_q)
@@ -209,7 +209,7 @@ $$
 
 <p align="center"><img width="600" height="auto" img src="/images/image_69.png"></p>
 
-결과적으로, 커널함수를 사용한 SVR의 핵심 내용 정리해보면 다음과 같습니다.
+결과적으로, 매핑함수를 사용한 SVR의 핵심 내용 정리해보면 다음과 같습니다.
 
 ***"원공간(Input space)에서의 데이터를 매핑함수 ${\phi}$(x)를 통해 선형으로 구성할 수 있는 고차원 공간(Feature space)로 매핑한 뒤 데이터를 잘 설명하는 선형회귀선을 찾자."*** <br><br>
 
@@ -217,7 +217,26 @@ $$
 
 ### Kernel trick
 
-그런데
+그런데 고차원으로 표현하는 과정은 매우 연산량이 큽니다. 데이터를 고차원으로 매핑하고, 데이터 요소끼리 내적해야하기 때문입니다. 다행히도 SVR은 상대적으로 저차원인 원공간에서 내적을 하고, 고차원공간으로 매핑함으로써 간단히 연산할 수 있는 **kernel trick** 을 도입했습니다. 따라서 트릭을 가능하게 하는 커널함수(kernel function)을 사용합니다.
+<br>
+따라서 다시 오랜만에 Lagrangian Dual Problem을
+
+
+#### Dual Lagrangian problem with Kernel trick
+
+
+$$
+ { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+$$
+
+
+#### Decision function
+
+
+$$
+  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
+$$
+
 
 ---
 ### 비선형 데이터를 활용한 코드 구현 예시
@@ -296,20 +315,88 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
     return mat
 ```
 
-커널함수만을 변형시켜 회귀계수 추정을 비교해봅시다. 커널함수비교를 위해 손실함수는 epsilon insensitive로, 하이퍼 파라미터는 (epsilon=1, C=0.001, gamma=0.1)로 정의했습니다. 한눈에 보기에도 해당 데이터에는 RBF kernel을 사용한 회귀분석이 가장 적합한 것을 확인할 수 있었습니다. 이처럼 주어진 데이터와 문제상황에 따라 최적의 커널함수를 직접 학습하고, 실험하여 찾아야합니다.
+커널함수만을 변형시켜 회귀계수 추정을 비교해봅시다. 커널함수비교를 위해 손실함수는 epsilon insensitive로, 하이퍼 파라미터는 (epsilon=1, C=0.001, gamma=0.1)로 정의했습니다. 한눈에 보기에도 해당 데이터에는 RBF kernel을 사용한 회귀분석이 가장 적합한 것을 확인할 수 있었습니다. 이처럼 주어진 데이터에 사용하는 커널함수에 따라 feature space의 특징이 달라지기 때문에 데이터 특성에 적합한 커널함수를 결정하는 것은 중요합니다.
 
 
 <p align="center"><img width="650" height="auto" img src="/images/image_2.png"></p>
 
+생성 데이터에 적합한 커널함수는 test set의 MSE가 가장 낮은 RBF kernel function이라 할 수 있겠습니다. 그래프를 봐도 가장 적합하게 예측하는게 보이죠.
+
 #### **3. Loss function 비교**
 
 #### Loss function
-흔히 선형회귀문제에서는 손실함수(Loss function)를 MSE(Mean squared error)로 정의하여 사용합니다. 하지만
+앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다.
+
+<p align="center"><img width="650" height="auto" img src="/images/image_4.png"></p>
+<p align="center"><img width="650" height="auto" img src="/images/image_3.png"></p>
+각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다.</p>
+
+* ${\epsilon}$-insensitive loss function
+```python
+## Epsilon - insensitive loss
+def eps_loss(t, c=3, e = 5):
+    return(abs(t)<e)*0* abs(t) +((t)>=e)*c*abs(t-e) +((t)<-e)*c*abs(t+e)
+```
+<p align="center"><img width="650" height="auto" img src="/images/image_62.png"></p>
+
+
+* Laplacian loss function
+```python
+## Laplacian loss
+def laplacian_loss(t, c=3):
+    return c*abs(t)
+```
+<p align="center"><img width="400" height="auto" img src="/images/image_36.png"></p>
+
+* Gaussian_loss loss function
+```python
+## Gaussian loss
+def gaussian_loss(t, c=3):
+    return c*0.5*t**2    
+```
+<p align="center"><img width="400" height="auto" img src="/images/image_37.png"></p>
+
+* Huber loss function
+```python
+## Hubor loss
+def huber_loss(t, c=3, s=5):
+    return c*((abs(t)<s)*(0.5/s)*(t**2) + (abs(t)>=s)*(abs(t)-s/2))
+```
+<p align="center"><img width="650" height="auto" img src="/images/image_63.png"></p>
+
+* Polynomial loss function
+```python
+# Polynomial loss
+def poly_loss(t, c=3, p=3):
+    return c*((p**-1)*abs(t)**p)
+```
+<p align="center"><img width="650" height="auto" img src="/images/image_64.png"></p>
+
+* Piecewise loss function
+```python
+## Piecewise polynomial
+def Picewise_polynomial_loss(t, c=3, s=5, p=3):
+    return c*((abs(t)<=s)*((abs(t)**p)/p/(s*(p-1)))+(abs(t)>s)*(abs(t)-(s*(p-1))/p))  
+```
+<p align="center"><img width="650" height="auto" img src="/images/image_65.png"></p>
+<br>
+
+이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 ${\epsilon}$-insensitive 손실함수가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다.
+<p align="center"><img width="650" height="auto" img src="/images/results.png"></p>
+
 
 <br />
 #### Loss function hyperparameter
 
-기존의 선형회귀와 가장 큰 관점차이는 손실함수(Loss function)에 Penalty(C)를 부여한다는 점입니다.
+기존의 선형회귀와 가장 큰 관점차이는 손실함수(Loss function)에 Penalty(C)를 부여한다는 점입니다. 종류를 살펴보면 다음과 같이 다양하게 정의되어있습니다.
+
+
+
+
+
+
+
+
 
 #### Loss function
 
