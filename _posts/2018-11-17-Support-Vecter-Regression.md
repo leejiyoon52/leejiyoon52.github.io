@@ -206,7 +206,7 @@ $$
 p << q
 $$
 
-<p align="center"><img width="600" height="auto" img src="/images/image_80.png"></p>
+<p align="center"><img width="550" height="auto" img src="/images/image_80.png"></p>
 
 결과적으로, 매핑함수를 사용한 SVR의 핵심 내용 정리해보면 다음과 같습니다.
 
@@ -216,14 +216,12 @@ $$
 
 ### Kernel trick
 
-그런데 고차원으로 표현하는 과정은 매우 연산량이 큽니다. 데이터를 고차원으로 매핑하고, 데이터 요소끼리 내적해야하기 때문입니다. 다행히도 SVR은 상대적으로 저차원인 원공간에서 내적을 하고, 고차원공간으로 매핑함으로써 간단히 연산할 수 있는 **kernel trick** 을 도입했습니다. 따라서 트릭을 가능하게 하는 커널함수(kernel function)을 사용합니다.
-<br>
-따라서 다시 오랜만에 Lagrangian Dual Problem 목적식 으로 돌아가봅시다.
+그런데 고차원으로 표현하는 과정은 매우 연산량이 큽니다. 데이터를 고차원으로 매핑하고, 데이터 요소끼리 내적해야하기 때문입니다. 다행히도 SVR은 상대적으로 저차원인 원공간에서 내적을 하고, 고차원공간으로 매핑함으로써 간단히 연산할 수 있는 **kernel trick** 을 도입했습니다. 따라서 트릭을 가능하게 하는 커널함수(kernel function)을 사용합니다. 따라서 다시 오랜만에 Lagrangian Dual Problem 목적식 으로 돌아가봅시다.
 
 $$
 { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{ \epsilon } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
 $$
-해당 식에서 ${x^{T}_{ i }x_{ j }}$에 커널 함수를 사용하여 아래 식과 같이  ${K(x_{ i }x_{ j })}$ 으로 표현하며, 고차원 공간으로 변형해줍니다.
+해당 식에서 $${x^{T}_{ i }x_{ j }}$$에 커널 함수를 사용하여 아래 식과 같이  $${K(x_{ i }x_{ j })}$$ 으로 표현하며, 고차원 공간으로 변형해줍니다.
 
 #### Dual Lagrangian problem with Kernel trick
 
@@ -329,7 +327,7 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 #### **3. Loss function 비교**
 
 ##### Loss function
-앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다.
+앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다. 특히 piecewise polynomial의 경우 $${\sigma}$$를 경계로 penalty값이 확 오르는게 신기하네요.
 
 <p align="center"><img width="650" height="auto" img src="/images/lossfun.png"></p>
 <p align="center"><img width="650" height="auto" img src="/images/image_3.png"></p>
@@ -390,10 +388,166 @@ def Picewise_polynomial_loss(t, c=3, s=5, p=3):
 <p align="center"><img width="650" height="auto" img src="/images/results.png"></p>
 
 ```python
+## Quadratic form
+class svr:
+    '''
+    loss: ['epsilon-insensitive','huber','laplacian','gaussian','polynomial','piecewise_polynomial'] defualt: epsilon-insensitive
+    kernel: [None,'rbf', 'linear','poly']
+    coef0: Independent term in kernel function. in 'linear','poly'
+    degree: Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.
+    gamma: Kernel coefficient for ‘rbf’, ‘poly’
+    p: polynomial/'piecewise_polynomial loss function p
+    sigma: for loss function
+    '''
+    def __init__(self,loss = 'epsilon-insensitive',C = 1.0, epsilon = 1.0,
+                 kernel = None, coef0=1.0, degree=3, gamma=0.1, p=3, sigma=0.1):
+        self.loss = loss
+        self.kernel = kernel
+        self.C = C
+        self.epsilon = epsilon
+        self.coef0 = coef0
+        self.degree= degree
+        self.gamma = gamma
+        self.sigma = sigma
+        self.p = p
 
+    #model fitting    
+    def fit(self,X,y):
+        self.X = X
+        self.y = y
+
+        n = self.X.shape[0]#numper of instances
+        #variable for dual optimization problem
+
+        alpha = cvx.Variable(n)
+        alpha_ = cvx.Variable(n)
+        one_vec = np.ones(n)
+
+        #object function and constraints of all types of loss fuction
+
+        if self.loss == 'huber':
+            self.constraints = []
+            self.svr_obj = cvx.Maximize(-.5*cvx.quad_form(alpha-alpha_, kernel_matrix(self.X,kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma)) - self.epsilon*one_vec*(alpha+alpha_) + self.y*(alpha-alpha_) - self.sigma/(2*self.C)*one_vec*(cvx.power(alpha, 2) + cvx.power(alpha_, 2)))
+            self.constraints += [cvx.sum(one_vec*alpha - one_vec*alpha_) == 0]
+            for i in range(n):
+                self.constraints += [alpha[i] >= 0, alpha_[i] >=0]
+            svr = cvx.Problem(self.svr_obj,self.constraints)
+            svr.solve()
+
+            #alpha & alpha_
+            self.a = np.array(alpha.value).flatten()
+            self.a_ = np.array(alpha_.value).flatten()
+
+            #compute b
+            idx = np.where((np.array(alpha.value).ravel() < self.C-1E-10) * (np.array(alpha.value).ravel() > 1E-10))[0][0]
+            self.b = -self.epsilon + self.y[idx] - np.sum([(alpha.value[i]-alpha_.value[i])*kernel_f(self.X[idx], self.X[i],
+                                       kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)])
+
+        elif self.loss == 'laplacian': # epsilon = 0 of epsilon-insensitive
+            self.constraints = []
+            self.svr_obj = cvx.Maximize(-.5*cvx.quad_form(alpha-alpha_,
+                                                     kernel_matrix(self.X,kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma)) + self.y*(alpha-alpha_))
+            self.constraints += [cvx.sum(one_vec*alpha - one_vec*alpha_) == 0]
+            for i in range(n):
+                self.constraints += [alpha[i] >= 0, alpha_[i] >=0, alpha[i] <= self.C, alpha_[i] <= self.C]
+            svr = cvx.Problem(self.svr_obj,self.constraints)
+            svr.solve()
+
+            #alpha & alpha_
+            self.a = np.array(alpha.value).flatten()
+            self.a_ = np.array(alpha_.value).flatten()
+
+            #compute b
+            idx = np.where((np.array(alpha.value).ravel() < self.C-1E-10) * (np.array(alpha.value).ravel() > 1E-10))[0][0]
+            self.b = -self.epsilon + self.y[idx] - np.sum([(alpha.value[i]-alpha_.value[i])*kernel_f(self.X[idx], self.X[i],
+                                       kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)])
+
+        elif self.loss == 'gaussian': # sigma = 1 of huber
+            self.constraints = []
+            self.svr_obj = cvx.Maximize(-.5*cvx.quad_form(alpha-alpha_,
+                                                     kernel_matrix(self.X,kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma)) - self.epsilon*one_vec*(alpha+alpha_) + self.y*(alpha-alpha_) - 1./(2*self.C)*one_vec*(cvx.power(alpha, 2) + cvx.power(alpha_, 2)))
+            self.constraints += [cvx.sum(one_vec*alpha - one_vec*alpha_) == 0]
+            for i in range(n):
+                self.constraints += [alpha[i] >= 0, alpha_[i] >=0]
+            svr = cvx.Problem(self.svr_obj,self.constraints)
+            svr.solve()
+
+            #alpha & alpha_
+            self.a = np.array(alpha.value).flatten()
+            self.a_ = np.array(alpha_.value).flatten()
+
+            #compute b
+            idx = np.where((np.array(alpha.value).ravel() < self.C-1E-10) * (np.array(alpha.value).ravel() > 1E-10))[0][0]
+            self.b = -self.epsilon + self.y[idx] - np.sum([(alpha.value[i]-alpha_.value[i])*kernel_f(self.X[idx], self.X[i],
+                                       kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)])
+
+        elif self.loss == 'polynomial':
+            self.constraints = []
+            self.svr_obj = cvx.Maximize(-.5*cvx.quad_form(alpha-alpha_,
+                                                     kernel_matrix(self.X,kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma)) + self.y*(alpha-alpha_) - (self.p-1)/(self.p*self.C**(self.p-1))* one_vec*(cvx.power(alpha, self.p/(self.p-1)) + cvx.power(alpha_, self.p/(self.p-1))))
+            self.constraints += [cvx.sum(one_vec*alpha - one_vec*alpha_) == 0]
+            for i in range(n):
+                self.constraints += [alpha[i] >= 0, alpha_[i] >=0]
+            svr = cvx.Problem(self.svr_obj,self.constraints)
+            svr.solve()
+
+            #alpha & alpha_
+            self.a = np.array(alpha.value).flatten()
+            self.a_ = np.array(alpha_.value).flatten()
+
+            #compute b
+            idx = np.where((np.array(alpha.value).ravel() < self.C-1E-10) * (np.array(alpha.value).ravel() > 1E-10))[0][0]
+            self.b = -self.epsilon + self.y[idx] - np.sum([(alpha.value[i]-alpha_.value[i])*kernel_f(self.X[idx], self.X[i],
+                                       kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)])
+
+        elif self.loss == 'piecewise_polynomial':
+            self.constraints = []
+            self.svr_obj = cvx.Maximize(-.5*cvx.quad_form(alpha-alpha_,
+                                                     kernel_matrix(self.X,kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma)) + self.y*(alpha-alpha_) - (self.p-1)*self.sigma/(self.p*self.C**(self.p-1))* one_vec*(cvx.power(alpha, self.p/(self.p-1)) + cvx.power(alpha_, self.p/(self.p-1))))
+            self.constraints += [cvx.sum(one_vec*alpha - one_vec*alpha_) == 0]
+            for i in range(n):
+                self.constraints += [alpha[i] >= 0, alpha_[i] >=0]
+            svr = cvx.Problem(self.svr_obj,self.constraints)
+            svr.solve()
+
+            #alpha & alpha_
+            self.a = np.array(alpha.value).flatten()
+            self.a_ = np.array(alpha_.value).flatten()
+
+            #compute b
+            idx = np.where((np.array(alpha.value).ravel() < self.C-1E-10) * (np.array(alpha.value).ravel() > 1E-10))[0][0]
+            self.b = -self.epsilon + self.y[idx] - np.sum([(alpha.value[i]-alpha_.value[i])*kernel_f(self.X[idx], self.X[i],
+                                       kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)])
+        else:
+            self.constraints = []
+            self.svr_obj = cvx.Maximize(-.5*cvx.quad_form(alpha-alpha_, kernel_matrix(self.X,kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma)) - self.epsilon*one_vec*(alpha+alpha_) + self.y*(alpha-alpha_))
+            self.constraints += [cvx.sum(one_vec*alpha - one_vec*alpha_) == 0]
+            for i in range(n):
+                self.constraints += [alpha[i] >= 0, alpha_[i] >=0, alpha[i] <= self.C, alpha_[i] <= self.C]
+            svr = cvx.Problem(self.svr_obj,self.constraints)
+            svr.solve()
+
+            #alpha & alpha_
+            self.a = np.array(alpha.value).flatten()
+            self.a_ = np.array(alpha_.value).flatten()
+
+            #compute b
+            idx = np.where((np.array(alpha.value).ravel() < self.C-1E-10) * (np.array(alpha.value).ravel() > 1E-10))[0][0]
+            self.b = -self.epsilon + self.y[idx] - np.sum([(alpha.value[i]-alpha_.value[i])*kernel_f(self.X[idx], self.X[i],
+                                       kernel=self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)])
+
+
+    def predict(self,new_X):
+        self.results = []
+        n = new_X.shape[0]
+        for j in range(n):
+            X = new_X[j]
+            self.results += [np.sum([(self.a[i] - self.a_[i]) *kernel_f(X, self.X[i],
+                                     kernel = self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)]) + self.b]   
+        return self.results
+        
 ```
 
-<br />
 
 #### ${\epsilon}$-insensitive Hyper parameter
 
@@ -417,3 +571,5 @@ ${\epsilon}$을 키우게 되면, 더 큰 구간 $$2{\epsilon}$$내에서 penalt
 
 * Gamma 변경 [ 0.1, 0.7, 1, 5 ] ( Epsilon = 0.2, Cost = 1 )
 <p align="center"><img width="650" height="auto" img src="/images/image_90.png"></p>
+
+gamma의 경우 RBF커널함수에서 $$\frac { 1 }{ \sigma^{2} } $$ 과 같은 의미이지만, 계산의 용의성을 위해 다르게 표현한 것입니다. gamma는 커널의 폭을 제어하게되는데요, gamma가 클수록 회귀선이 꼬불꼬불해지는 것을 확인할 수 있습니다.
