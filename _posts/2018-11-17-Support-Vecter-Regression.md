@@ -545,7 +545,7 @@ class svr:
             self.results += [np.sum([(self.a[i] - self.a_[i]) *kernel_f(X, self.X[i],
                                      kernel = self.kernel,coef0=self.coef0,degree=self.degree,gamma=self.gamma) for i in range(n)]) + self.b]   
         return self.results
-        
+
 ```
 
 
