@@ -13,9 +13,9 @@ image:
 Kernel-based Learning: Support Vector Regression
 =======
 
-해당 포스트에서는 대표적인 분류 알고리즘 SVM에서 소개된 손실함수를 도입하여 회귀식을 구성하는 **SVR(Support Vector Regression)** 에 대해 소개하겠습니다. 고려대학교 강필성 교수님의 Business Analytics강의와 김성범 교수님의 Forecast model강의를 바탕으로 작성하였습니다.
+해당 포스트에서는 대표적인 분류 알고리즘 SVM에서 소개된 손실함수를 도입하여 회귀식을 구성하는 **SVR(Support Vector Regression)** 에 대해 소개하겠습니다. 고려대학교 강필성 교수님의 Business Analytics강의와 김성범 교수님의 Forecasting Model강의를 바탕으로 작성하였습니다.
 
-
+----
 ### Regression
 
 회귀 알고리즘은 데이터가 주어졌을 때 데이터를 잘 설명하는 선을 찾고자 합니다.
@@ -25,34 +25,37 @@ Kernel-based Learning: Support Vector Regression
 
 그림(B)의 회귀선은 학습 데이터에는 매우 적합한 회귀선을 구했지만, 새로 들어올 미래 데이터가 조금만 변화하게 되어도 예측 값이 민감하게 변하게 됩니다. 반면 그림(A)에서의 회귀선은 학습데이터의 설명력은 낮아졌지만, 미래 데이터의 변화에 예측 값의 변화가 보다 안정적(robust)입니다.
 
-이처럼 일반 선형회귀 모델에서는 모형이 그림(B)와 같이 과적합(overfitting)되면 회귀 계수W의 크기도 증가하기 때문에 추가적으로 제약을 부여하여 회귀계수의 크기가 너무 커지지 않도록 정규화(regularized)를 위한 penalty조건식을 부여하여 계수의 크기를 제한합니다. 대표적으로 릿지 회귀모형(Ridge regression)이 있습니다. 릿지 회귀모형의 손실함수 식은 아래와 같이 표현됩니다.
+이처럼 일반 선형회귀 모델에서는 모형이 그림(B)와 같이 과적합(overfitting)하게 되면 회귀 계수 W의 크기도 증가하기 때문에 추가적으로 제약을 부여하여 회귀계수의 크기가 너무 커지지 않도록 penalty식을 부여하여 계수의 크기를 제한하는 정규화(regularized)방법을 적용합니다. 이렇게 penalty식이 추가된 회귀모델은 대표적으로 릿지 회귀모형(Ridge regression)이 있습니다. 릿지 회귀모형의 손실함수 식은 아래와 같이 표현됩니다.
 
 $$
 L_{ridge} = \min  \underbrace{\frac { 1 }{ 2 } \sum _{ i=1 }^ n ({ y }_{i} - { f(x_{i}) } )^2}_\text{ loss funciton }  + {\lambda} \overbrace{ { \left\| w \right\|  }^{ 2} } ^{\text{Robustness}}
 $$
 
-Ridge 손실함수 수식에 담긴 의미를 해석해보면, "실제값과 추정값의 차이를 작도록 하되, 회귀계수 크기가 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
+**Ridge 손실함수** 수식에 담긴 의미를 해석해보면, **"실제값과 추정값의 차이를 작도록 하되, 회귀계수 크기가 작도록 고려하는 선을 찾자"** 라고 할 수 있습니다.
 
 <br>
 
-이는 오늘의 주제 **SVR(Support Vector Regression)** 의 목적과 유사합니다. 다만 관점의 차이가 있다면 Penalty를 적용시키는 식이 반대이며, 아래와 같이 표현할 수 있습니다.
+이러한 릿지 회귀모형은 오늘 포스트의 주제 **SVR(Support Vector Regression)** 의 목적과 유사합니다. 다만 관점의 차이가 있다면 penalty를 적용시키는 식이 릿지 회귀모형에서의 loss function과 대응되며, 아래와 같이 표현할 수 있습니다.
 
 
 $$
  L_{SVR} = \min  \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
 $$
 
-SVR 손실함수 수식에 담긴 의미를 해석해보면, "회귀계수 크기를 작게하여 회귀식을 평평하게 만들되, 실제값과 추정값의 차이를 작도록 고려하는 선을 찾자" 라고 할 수 있습니다.
+**SVR 손실함수** 수식에 담긴 의미를 해석해보면, **"회귀계수 크기를 작게하여 회귀식을 평평하게 만들되, 실제값과 추정값의 차이를 작도록 고려하는 선을 찾자"** 라고 할 수 있습니다. 릿지 회귀 모형과 고려사항은 비슷하지만 더 중요하게 생각하는 목적이 다른 셈이죠.
 
- SVR로 활용할 수 있는 loss function 수식은 매우 다양하며, 가장 대표적인  ${\epsilon}$-insensitive함수를 제외한 나머지 함수에 대해서는 '비선형 데이터를 활용한 코드 구현 예시' 파트에서 다뤄보도록 하겠습니다.
+ SVR에서 활용할 수 있는 loss function 수식은 매우 다양하며, 앞으로 가장 대표적인  ${\epsilon}$-insensitive함수를 제외한 나머지 함수에 대해서는 '비선형 데이터를 활용한 코드 구현 예시' 파트에서 다뤄보도록 하겠습니다.
 
 ---
 
 ### Support Vector Regression
 
-#### Original Problem
+---
 
-자, 이제 SVR의 손실함수를 ${\epsilon}$-insensitive함수를 사용한 SVR식으로 표현해 보았습니다. 그러자 갑자기 식이 엄청 복잡해 보입니다. 그림을 통해 도대체 ${ \epsilon }$  와 ${ \xi  }$가 무엇인지에 대해 알아봅시다.
+#### **1. Original Problem**
+
+자, 이제 SVR의 손실함수를 ${\epsilon}$-insensitive함수를 사용한 SVR식으로 표현하겠습니다. 그러자 갑자기 식이 엄청 복잡해 보입니다. 그림을 통해 도대체 **${ \epsilon }$**  와 **${ \xi  }$** 가 무엇인지에 대해 알아봅시다.
+
 
 
 $$
@@ -71,7 +74,7 @@ $$
 { \xi  }_{ i }, { \xi  }_{ i }^* \ge {0}
 $$
 
-
+<br>
 
 <p align="center"><img width="700" height="auto" img src="/images/image_67.png"></p>
 
@@ -80,17 +83,17 @@ $$
 * ${ \xi  }$  : 튜브 밖에 벗어난 거리 (회귀식 위쪽)
 * ${ \xi  }^{ * }$ : 튜브 밖에 벗어난 거리 (회귀식 아래쪽)
 
-SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,\epsilon)$만큼 튜브를 생성하여, 오른쪽 그림에서처럼 튜브내에 실제 값이 있다면 예측값과 차이가 있더라도 오차가 없다고 가정하여 penalty를 0으로 주고, 튜브 밖에 실제 값이 있다면 C의 배율로 penalty를 부여하게 됩니다.
+<br>
 
+SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,\epsilon)$만큼 튜브를 생성하여, 오른쪽 그림에서처럼 튜브내에 실제 값이 있다면 예측값과 차이가 있더라도 용인해주기 위해 penalty를 0으로 주고, 튜브 밖에 실제 값이 있다면 C의 배율로 penalty를 부여하게 됩니다. 회귀선에 대해 일종의 상한선, 하한선을 주는 셈이죠. 다시 한 번, SVR의 특징을 정리해보면 다음과 같습니다.
 
-결과적으로, SVR의 특징을 정리해보면 다음과 같습니다.
+>***"SVR은 데이터에 노이즈가 있다고 가정하며, 이러한 점을 고려하여 노이즈가 있는 실제 값을 완벽히 추정하는것을 추구하지 않는다. 따라서 적정 범위(2${ \epsilon }$) 내에서는 실제값과 예측값의 차이를 허용한다."***
 
-***"SVR은 데이터에 노이즈가 있다고 가정하며, 이러한 점을 고려하여 노이즈가 있는 실제 값을 완벽히 추정하는것을 추구하지 않는다. 따라서 적정 범위(2${ \epsilon }$) 내에서는 실제값과 예측값의 차이를 허용한다."*** <br><br>
+<br>
 
+#### **2. Lagrangian Primal problem**
 
-#### Lagrangian Primal problem
-
-앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형함으로써 이런 한계를 극복하게 됩니다.
+앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 최적화 툴을 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않습니다. 따라서 Lagrangian multiplier를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형함으로써 이런 한계를 극복하게 됩니다. 뿐만 아니라 Lagrangian Primal problem은 추후 소개될 커널함수를 사용하기 용이하도록 수식을 재구성하게되는 이점이 있습니다.
 
 
 $$
@@ -105,10 +108,11 @@ $$
  {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
 $$
 
-Lagrangian primal problem으로 재구성한 결과 역시 convex하고, 연속적인 QP(quadratic program)입니다. 이 경우, KKT조건에 의해 목적식의 미지수에 대해 미분 값이 0일때 최소값을 갖게됩니다. 따라서 목적식의 미지수 $ b, W, { \xi } $ 에 대해 각각 미분해 봅시다.
+Lagrangian primal problem으로 재구성한 결과 역시 convex하고, 연속적인 QP(quadratic programming problem)입니다. 이 경우, KKT조건에 의해 목적식의 미지수에 대해 미분 값이 0일때 최적해를 갖게됩니다. 최적해를 찾기위해 목적식의 미지수 $ b, W, { \xi } $ 에 대해 각각 미분해 봅시다.
 
+<br>
 
-#### Take a derivative
+#### **3. Take a derivative**
 
 $$
 \frac { \partial L }{ \partial b }= \boldsymbol{ \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{ * })} = 0 } \tag{1}
@@ -121,13 +125,15 @@ $$
 
 
 $$
-\frac { \partial L }{ \partial \xi^{ * } }= C - { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * } = 0 \quad \Rightarrow \quad \boldsymbol{ C = ({ \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * })} \tag{3}
+\frac { \partial L }{ \partial \xi^{ * } }= C - { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * } = 0 \quad \Rightarrow \quad \boldsymbol{ C = { \alpha }_{i}^{ * }-{ \eta }_{ i }^{ * }} \tag{3}
 $$
 
 
-미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier ${\alpha}$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${\alpha}$에 대한 식 Lagrangian dual problem으로 정리합니다.
+미지수의 미분 값이 0일때,  3개의 조건(1), (2), (3)을 얻게 됩니다. 이 과정에서 바로 회귀식을 구성는 $ W $와 $ b $ 값이 구해졌다면 좋았을 텐데, Lagrangian multiplier ${\alpha}$값을 모르기 때문에 아직은 바로 구할 수 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 다시 대입하여 ${\alpha}$에 대한 식 Lagrangian dual problem으로 새롭게 정리합니다.
 
-#### Lagrangian Dual Problem
+<br>
+
+#### **4. Lagrangian Dual Problem**
 
 
 $$
@@ -139,21 +145,20 @@ $$
 s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
 $$
 
-Lagrangian dual problem으로 재구성한 결과 ${\alpha}$로 이루어져있는 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 최적화 quadratic  optimization을 통해 간편하게 ${\alpha}$를 도출할 수 있습니다. 이렇게 구한 값을 (2)식에 대입해볼까요?
+Lagrangian dual problem으로 재구성한 목적식은 ${\alpha}$로 이루어져있는 convex하고, 연속적인 QP(quadratic programming problem)입니다. 따라서 최적화 툴을 통해 간편하게 ${\alpha}$를 도출할 수 있습니다.
 
+<br>
 
-
-#### Decision function
+#### **5. Decision function**
 
 
 $$
 \quad W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i }\quad \Rightarrow  \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression }
 $$
 
+Lagrangian dual problem을 통해 구한 $${ \alpha }_{ i },{ \alpha }_{ i }^{ * }$$값을 (2)식에 대입해봅시다. 그러면 우리가 구하고자하는 $$W$$를 구할 수 있게 됩니다. 그렇지만 아직 $$ b $$를 구하지 않았기 때문에 회귀식을 구성할 수 없습니다!!
 
-대입해보니 처음 SVR의 목적과 같이 회귀식이 구성되는 것을 확인할 수 있었습니다. 여기서 우리는 현재 $${ \alpha }_{ i }^{ * } , { \alpha }_{ i }$$ , $$ x_i $$에 대해 알고 있습니다. 그렇지만 아직 $$ b $$를 구하지 않았습니다.
-
-회귀식을 구성하는 마지막 단계인 $b$를 구하는 과정을 봅시다.
+이제 회귀식을 구성하는 마지막 단계인 $b$를 구하는 과정을 봅시다.
 
 $$
 \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
@@ -179,10 +184,10 @@ $$
 (C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{8}
 $$
 
-$b$를 구하기 앞서 회귀식을 구축하는데 사용되는 **support vector** 를 구해야합니다. 식(5)와(7)을사용해서 구해보도록 하겠습니다. 먼저 $${ \alpha }_{i} { \neq } 0  $$ 이라면 $$({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0$$을 만족해야합니다. 이를 만족한다는 것은 해당 데이터가 튜브 boundary위에 딱 있음을 의미하는데요, 이경우 튜브 밖으로 나간 값이 없으므로 식(7)의 $${\xi}_{i } = 0$$이라 할 수 있습니다. 그렇게 되면 자연스럽게 $$(C- { \alpha }_{i}){ \neq } 0 $$가 성립합니다. 따라서 이경우는 튜브선 위 혹은 그 밖에 있는 데이터를 의미합니다. 반대로 $${ \alpha }_{i}=0$$ 이라면, $${\xi}_{i } { \neq } 0$$ 라면 $$(C- { \alpha }_{i}) = 0 $$이 되어야 합니다. 그렇게 되면$$C = { \alpha }_{i} = 0 $$가 되어 적합하지 않습니다. 식(6),(8)에서도 동일한 결과를 구할 수 있으며 결과적으로 SVR에서의
+$b$를 구하기 위해서는 회귀식을 구축하는데 학습하는 데이터 **support vector** 를 구해야합니다. 식(5)와(7)을사용해서 구해보도록 하겠습니다. 먼저 식(5)에서 $${ \alpha }_{i} { \neq } 0  $$ 이라면 $$({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0$$을 만족해야합니다. 이를 만족한다는 것은 해당 데이터가 튜브 boundary위에 딱 있음을 의미하는데요, 이경우 튜브 밖으로 나간 값이 없으므로 식(7)의 $${\xi}_{i } = 0$$이라 할 수 있습니다. 그렇게 되면 자연스럽게 $$(C- { \alpha }_{i}){ \neq } 0 $$가 성립합니다. 따라서 이경우는 튜브선 위 혹은 그 밖에 있는 데이터를 의미합니다. 반대로 $${ \alpha }_{i}=0$$ 이라면, $${\xi}_{i } { \neq } 0$$ 라면 $$(C- { \alpha }_{i}) = 0 $$이 되어야 합니다. 그렇게 되면$$C = { \alpha }_{i} = 0 $$가 되어 적합하지 않습니다. 식(6),(8)에서도 동일한 결과를 구할 수 있으며 결과적으로 SVR에서의
  **support vector는 튜브선을 포함하여 바깥쪽에 예측이 된 $x_{sv}$**  입니다.
 
-이제 진짜 $b$를 구해봅시다.결론적으로 조건$$0<{ \alpha }_{i} <C$$ 와 $$0<{ \alpha }_{i}^{ * } <C$$을 충족하는 $$x_{sv}$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. 즉, 다음과 같이 유도됩니다.
+이제 드디어 $b$를 구할 준비가 끝났습니다. 결론적으로 조건 $$0<{ \alpha }_{i} <C$$ 혹은 $$0<{ \alpha }_{i}^{ * } <C$$을 충족하는 $$x_{sv}$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. $b$를 구하기 위한 식(4)를 다시 정리하면 다음과 같습니다.
 
 $$
 \quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv}
@@ -192,11 +197,13 @@ $$
 
 
 
-자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 하지만 지금까지 소개한 SVR 회귀식은 **선형성** 만을 띄고 있습니다. 하지만 선형성만으로 데이터를 잘 표현하지 못하는 경우가 있기마련입니다. 이런 경우 매핑함수(mapping function)를 사용하여 문제를 해결합니다. 해당 내용을 더욱 자세히 알아봅시다.
+자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 하지만 지금까지 소개한 SVR 회귀식은 **선형성** 만을 띄고 있습니다. 하지만 선형성만으로 데이터를 잘 표현하지 못하는 경우가 있기마련입니다. 이런 경우 매핑함수(mapping function)를 사용하여 비선형 문제를 해결할 수 있습니다. 해당 내용을 더욱 자세히 알아봅시다.
 
-### Support Vector Regression using Kernel function
+<br>
 
-하단의 그림 (C)와 같이 데이터를 잘 표현하기 위해 비선형의 회귀식을 구해야하는 경우 SVR에서는 SVM과 동일하게 매핑함수(mapping function)개념을 사용하여 해결합니다. 매핑 함수를 통해 데이터 관측치들을 더 높은 차원으로 변환시켜 선형으로 표현가능하게 해보자는 것입니다.
+#### **6. Support Vector Regression using Kernel function**
+
+하단의 그림 (E)와 같이 데이터를 잘 표현하기 위해 비선형 회귀식을 구해야하는 경우 SVR에서는  매핑함수(mapping function)를 사용하여 해결합니다. 매핑 함수는 상대적으로 저차원 데이터 관측치들을 더 높은 차원으로 변환시켜 데이터들을 선형으로 표현가능하게 해보자는 것입니다.
 
 $$
 x = (x_1, x_2, ... x_p) \Rightarrow {\phi}(x) = z = (z_1, z_2, ... x_q)
@@ -210,35 +217,41 @@ $$
 
 결과적으로, 매핑함수를 사용한 SVR의 핵심 내용 정리해보면 다음과 같습니다.
 
-***"원공간(Input space)에서의 데이터를 매핑함수 ${\phi}$(x)를 통해 선형으로 구성할 수 있는 고차원 공간(Feature space)로 매핑한 뒤 데이터를 잘 설명하는 선형회귀선을 찾자."*** <br><br>
+>***"원공간(Input space)에서의 데이터를 매핑함수 ${\phi}$(x)를 통해 선형으로 구성할 수 있는 고차원 공간(Feature space)로 매핑한 뒤 데이터를 잘 설명하는 선형회귀선을 찾자."***
 
 따라서 선형성을 기반으로 하는 SVR은 원공간이 아닌 고차원공간에서 학습을 시키게 됩니다. 그렇게 되면 결과적으로 비선형성을 띄는 회귀식을 구성할 수 있는 것이죠.
 
-### Kernel trick
+<br>
+
+#### **7. Kernel trick**
 
 그런데 고차원으로 표현하는 과정은 매우 연산량이 큽니다. 데이터를 고차원으로 매핑하고, 데이터 요소끼리 내적해야하기 때문입니다. 다행히도 SVR은 상대적으로 저차원인 원공간에서 내적을 하고, 고차원공간으로 매핑함으로써 간단히 연산할 수 있는 **kernel trick** 을 도입했습니다. 따라서 트릭을 가능하게 하는 커널함수(kernel function)을 사용합니다. 따라서 다시 오랜만에 Lagrangian Dual Problem 목적식 으로 돌아가봅시다.
 
 $$
 { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{ \epsilon } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
 $$
-해당 식에서 $${x^{T}_{ i }x_{ j }}$$에 커널 함수를 사용하여 아래 식과 같이  $${K(x_{ i }x_{ j })}$$ 으로 표현하며, 고차원 공간으로 변형해줍니다.
 
-#### Dual Lagrangian problem with Kernel trick
+해당 식에서 $${x^{T}_{ i }x_{ j }}$$에 커널 함수를 사용하여 아래 식과 같이  $${K(x_{ i }x_{ j })}$$ 으로 표현하여 고차원 공간으로 변형해줍니다.
 
+<br>
+
+#### **8. Dual Lagrangian problem with Kernel trick**
 
 $$
 { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
 $$
 
+<br>
 
-#### Decision function
+#### **9. Decision function**
 
 $$
 \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
 $$
 
-결과적으로 간편하게 고차원공간으로 매핑하여 비선형적인 회귀식을 도출할 수 있습니다.
+결과적으로 간편하게 고차원공간으로 매핑하여 다음과 같이 비선형적인 회귀식을 도출할 수 있습니다. 이렇게 커널 트릭으로 활용할 수 있는 커널 함수는 다양하게 있습니다. 대표적으로 RGB, Linear, Polynomial, Sigmoid 등이 있습니다.
 
+<p align="center"><img width="600" height="auto" img src="/images/mod5_kernels.png"></p>
 
 ---
 ### 비선형 데이터를 활용한 코드 구현 예시
@@ -383,9 +396,37 @@ def Picewise_polynomial_loss(t, c=3, s=5, p=3):
 <p align="center"><img width="650" height="auto" img src="/images/image_65.png"></p>
 <br>
 
-이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 **${\epsilon}$-insensitive 손실함수** 가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다.
+이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 **${\epsilon}$-insensitive 손실함수** 가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 코드를 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다. 해당 코드는 포스트 뒤에 Appendix에서 다루도록 하겠습니다.
 
 <p align="center"><img width="650" height="auto" img src="/images/results.png"></p>
+
+#### ${\epsilon}$-insensitive Hyper parameter
+
+생성 데이터에 대해 **RBF kernel** 과 **${\epsilon}$-insensitive 손실함수** 로 모델을 구성한 경우 성능이 좋은 것을 확인할 수 있었습니다. ${\epsilon}$-insensitive 손실함수의 다양한 하이퍼파라미터를 변경하게될 때에는 결과값이 어떻게 바뀌게 될까요? 하이퍼파라미터 C(cost), epsilon, gamma를 바꾸어가며 비교해봅시다.
+
+$$
+ L_{SVR} = \min  \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
+$$
+
+* Cost 변경 [ 1,0.3,0.1,1e-06 ] ( Epsilon = 0.2 , gamma = 0.1 )
+
+<p align="center"><img width="650" height="auto" img src="/images/image_92.png"></p>
+
+Cost는 작아질수록 잘못 예측된 값에 대해 penalty부여를 적게 하기 때문에 실제값과의 차이가 중요하지 않게됩니다. 따라서 회귀계수를 줄이고자하는 $$ \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}$$ 식을 더 비중있게 다루게 됩니다. 따라서 회귀식이 평평해지는 것을 확인할 수 있으며, 예측성능 또한 감소한것을 볼 수 있습니다.
+
+* Epsilon 변경 [ 0.2, 0.6, 1.4, 1.8 ] ( Cost = 1 , gamma = 0.1 )
+
+<p align="center"><img width="650" height="auto" img src="/images/image_91.png"></p>
+
+${\epsilon}$을 키우게 되면, 더 큰 구간 $$2{\epsilon}$$내에서 penalty를 부여하지 않게됩니다. 즉, 노이즈로 인식하고 맞춘셈 치는 값들이 많아지는 것이죠. 결과적으로 회귀식을 구성하는 support vector의 수도 감소하게 되고, 평평한 회귀식을 구상할 수 있게됩니다.
+
+* Gamma 변경 [ 0.1, 0.7, 1, 5 ] ( Epsilon = 0.2, Cost = 1 )
+<p align="center"><img width="650" height="auto" img src="/images/image_90.png"></p>
+
+gamma의 경우 RBF커널함수에서 $$\frac { 1 }{ \sigma^{2} } $$ 과 같은 의미이지만, 계산의 용의성을 위해 다르게 표현한 것입니다. gamma는 커널의 폭을 제어하게되는데요, gamma가 클수록 회귀선이 꼬불꼬불해지는 것을 확인할 수 있습니다.
+
+---
+* Appendix : 손실함수들을 quadratic형으로 변환
 
 ```python
 ## Quadratic form
@@ -547,29 +588,3 @@ class svr:
         return self.results
 
 ```
-
-
-#### ${\epsilon}$-insensitive Hyper parameter
-
-생성 데이터에 대해 **RBF kernel** 과 **${\epsilon}$-insensitive 손실함수** 로 모델을 구성한 경우 성능이 좋은 것을 확인할 수 있었습니다. ${\epsilon}$-insensitive 손실함수의 다양한 하이퍼파라미터를 변경하게될 때에는 결과값이 어떻게 바뀌게 될까요? 하이퍼파라미터 C(cost), epsilon, gamma를 바꾸어가며 비교해봅시다.
-
-$$
- L_{SVR} = \min  \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
-$$
-
-* Cost 변경 [ 1,0.3,0.1,1e-06 ] ( Epsilon = 0.2 , gamma = 0.1 )
-
-<p align="center"><img width="650" height="auto" img src="/images/image_92.png"></p>
-
-Cost는 작아질수록 잘못 예측된 값에 대해 penalty부여를 적게 하기 때문에 실제값과의 차이가 중요하지 않게됩니다. 따라서 회귀계수를 줄이고자하는 $$ \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}$$ 식을 더 비중있게 다루게 됩니다. 따라서 회귀식이 평평해지는 것을 확인할 수 있으며, 예측성능 또한 감소한것을 볼 수 있습니다.
-
-* Epsilon 변경 [ 0.2, 0.6, 1.4, 1.8 ] ( Cost = 1 , gamma = 0.1 )
-
-<p align="center"><img width="650" height="auto" img src="/images/image_91.png"></p>
-
-${\epsilon}$을 키우게 되면, 더 큰 구간 $$2{\epsilon}$$내에서 penalty를 부여하지 않게됩니다. 즉, 노이즈로 인식하고 맞춘셈 치는 값들이 많아지는 것이죠. 결과적으로 회귀식을 구성하는 support vector의 수도 감소하게 되고, 평평한 회귀식을 구상할 수 있게됩니다.
-
-* Gamma 변경 [ 0.1, 0.7, 1, 5 ] ( Epsilon = 0.2, Cost = 1 )
-<p align="center"><img width="650" height="auto" img src="/images/image_90.png"></p>
-
-gamma의 경우 RBF커널함수에서 $$\frac { 1 }{ \sigma^{2} } $$ 과 같은 의미이지만, 계산의 용의성을 위해 다르게 표현한 것입니다. gamma는 커널의 폭을 제어하게되는데요, gamma가 클수록 회귀선이 꼬불꼬불해지는 것을 확인할 수 있습니다.
