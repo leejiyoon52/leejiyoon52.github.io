@@ -343,12 +343,18 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 #### **3. Loss function 비교**
 
-##### Loss function
-앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다. 특히 piecewise polynomial의 경우 $${\sigma}$$를 경계로 penalty값이 확 오르는게 신기하네요.
+#### Loss function
+앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다. 특히 piecewise polynomial의 경우 $${\sigma}$$를 경계로 penalty값이 확 오르는게 신기합니다.
 
 <p align="center"><img width="650" height="auto" img src="/images/lossfun.png"></p>
 <p align="center"><img width="650" height="auto" img src="/images/image_3.png"></p>
-각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다.</p>
+
+#### Loss function hyper parameter
+
+각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다. 코드 및 그래프에서 하이퍼파라미터는 다음과 같습니다.
+C : cost , E : epsilon , P : degree , S : $${\sigma}$$
+
+<p>
 
 * ${\epsilon}$-insensitive loss function
 ```python
