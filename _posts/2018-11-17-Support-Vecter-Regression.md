@@ -91,7 +91,7 @@ SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,
 
 #### Lagrangian Primal problem
 
-앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier $ { \alpha }_{i}^{* }$와 ${ \eta }_{i}^{* } $를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
+앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier ${ \alpha }_{i}^{* }$와 ${ \eta }_{i}^{* }$를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
 
 
 $$
@@ -151,9 +151,11 @@ $$
 \quad W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i }\quad \Rightarrow  \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression }
 $$
 
+
 대입해보니 처음 SVR의 목적과 같이 회귀식이 구성되는 것을 확인할 수 있었습니다. 여기서 우리는 현재 ${ \alpha }_{ i }^{ * }$ , ${ \alpha }_{ i }$ , $ x_i $에 대해 알고 있습니다. 그렇지만 아직 $ b $를 구하지 않았습니다.
 
 회귀식을 구성하는 마지막 단계인 $b$를 구하는 과정을 봅시다.
+
 $$
 \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
 \quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv} \tag{1}
@@ -177,6 +179,7 @@ $$
 $$
 (C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{5}
 $$
+
 
 $b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x_{sv}$** 이기 때문에, 위의 (2),(3)번 조건에 의해 ${ \alpha }_{i} { \neq } 0$ 아니면(or) ${ \alpha }_{i}^{* }{ \neq } 0$ 입니다. 또한 (4),(5)번 조건에서도 support vector는 튜브 안에 있기 때문에 ${\xi}_{i }$ 와 ${\xi}_{i }^{* }$ 는 0이 됩니다. 따라서 $(C- { \alpha }_{i})$ >0 아니면 (or) $(C- { \alpha }_{i}^{ * })$ >0 이 됩니다. 결론적으로 아래의 조건을 충족하는 $x$만을 (1)식에 대입하게 되면, $b$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $b$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
 
