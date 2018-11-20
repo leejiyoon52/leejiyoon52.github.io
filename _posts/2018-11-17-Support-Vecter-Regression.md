@@ -129,14 +129,15 @@ $$
 
 #### Lagrangian Dual Problem
 
- $$
-  { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{ \epsilon } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
- $$
+
+$$
+{ { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{ \epsilon } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+$$
 
 
- $$
- s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
- $$
+$$
+s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
+$$
 
 Lagrangian dual problem으로 재구성한 결과 $ { \alpha }_{i} $와 $ { \alpha }_{i}^{* } $ 로 이루어져있는 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 최적화 quadratic  optimization을 통해 간편하게 $ { \alpha }_{ i },{ \alpha }_{ i }^{ * } $를 도출할 수 있습니다. 이렇게 구한 값 $ W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i } $을 $f(x)= Wx + b$ 에 대입해볼까요?
 
@@ -146,18 +147,18 @@ Lagrangian dual problem으로 재구성한 결과 $ { \alpha }_{i} $와 $ { \alp
 
 
 $$
- \quad W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i }\quad \Rightarrow  \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression }
+\quad W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i }\quad \Rightarrow  \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression }
 $$
 
 대입해보니 처음 SVR의 목적과 같이 회귀식이 구성되는 것을 확인할 수 있었습니다. 여기서 우리는 현재 ${ \alpha }_{ i }^{ * }$ , ${ \alpha }_{ i }$ , $ x_i $에 대해 알고 있습니다. 그렇지만 아직 $ b $를 구하지 않았습니다.
 
 회귀식을 구성하는 마지막 단계인 $ b $를 구하는 과정을 봅시다.
 $$
- \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
- \quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
+\underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
+\quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
 $$
 
- $KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
+$KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
 
 
 $$
@@ -176,7 +177,7 @@ $$
 (C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{4}
 $$
 
-$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x$** 이기 때문에, 위의 (1),(2)번 조건에 의해 $ { \alpha }_{i} { \neq } 0 $ 아니면(or) $ { \alpha }_{i}^{* }{ \neq } 0 $ 입니다. 또한 (3),(4)번 조건에서도 support vector는 튜브 안에 있기 때문에 $ {\xi}_{i } $ 와 $ {\xi}_{i }^{* } $ 는 0이 됩니다. 따라서 $ (C- { \alpha }_{i}) $ >0 아니면 (or) $ (C- { \alpha }_{i}^{ * }) $ >0 이 됩니다.
+$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x$** 이기 때문에, 위의 (1),(2)번 조건에 의해 $ { \alpha }_{i} { \neq } 0 $ 아니면(or) $ { \alpha }_{i}^{* }{ \neq } 0 $ 입니다. 또한 (3),(4)번 조건에서도 support vector는 튜브 안에 있기 때문에 $ {\xi}_{i } $ 와 $ {\xi}_{i }^{* } $ 는 0이 됩니다. 따라서 $ (C- { \alpha }_{i}) $ >0 아니면 (or) $ (C- { \alpha }_{i}^{ * }) $ >0 이 됩니다. 결론적으로 아래의 조건을 충족하는 $x$ 을만을
 
 
 $$
