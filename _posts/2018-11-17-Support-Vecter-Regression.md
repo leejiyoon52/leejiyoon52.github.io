@@ -155,40 +155,41 @@ $$
 회귀식을 구성하는 마지막 단계인 $ b $를 구하는 과정을 봅시다.
 $$
 \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
-\quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
+\quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv} \tag{1}
 $$
 
 $KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
 
 
 $$
-{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \tag{1}
+{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \tag{2}
 $$
 
 $$
-{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \tag{2}
+{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \tag{3}
 $$
 
 $$
-(C- { \alpha }_{i}){\xi}_{i } = 0 \tag{3}
+(C- { \alpha }_{i}){\xi}_{i } = 0 \tag{4}
 $$
 
 $$
-(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{4}
+(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{5}
 $$
 
-$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x$** 이기 때문에, 위의 (1),(2)번 조건에 의해 $ { \alpha }_{i} { \neq } 0 $ 아니면(or) $ { \alpha }_{i}^{* }{ \neq } 0 $ 입니다. 또한 (3),(4)번 조건에서도 support vector는 튜브 안에 있기 때문에 $ {\xi}_{i } $ 와 $ {\xi}_{i }^{* } $ 는 0이 됩니다. 따라서 $ (C- { \alpha }_{i}) $ >0 아니면 (or) $ (C- { \alpha }_{i}^{ * }) $ >0 이 됩니다. 결론적으로 아래의 조건을 충족하는 $x$ 을만을
-
+$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x_{sv}$** 이기 때문에, 위의 (2),(3)번 조건에 의해 $ { \alpha }_{i} { \neq } 0 $ 아니면(or) $ { \alpha }_{i}^{* }{ \neq } 0 $ 입니다. 또한 (4),(5)번 조건에서도 support vector는 튜브 안에 있기 때문에 $ {\xi}_{i } $ 와 $ {\xi}_{i }^{* } $ 는 0이 됩니다. 따라서 $ (C- { \alpha }_{i}) $ >0 아니면 (or) $ (C- { \alpha }_{i}^{ * }) $ >0 이 됩니다. 결론적으로 아래의 조건을 충족하는 $x$만을 (1)식에 대입하게 되면, $b$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $b$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
 
 $$
-{ \alpha }_{ i }({ \epsilon } + { \xi  } +  )
- \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
- \quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
+0<{ \alpha }_{i} <C
 $$
 
 
+$$
+0<{ \alpha }_{i}^{ * } <C
+$$
 
 
+자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 
 
 
 ---
