@@ -193,9 +193,16 @@ $$
 $$
 
 
-자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다.
+자 지금까지 긴 여정을 통해 SVR을 사용한 회귀식에 대해 알아보았습니다. 하지만 지금까지 소개한 SVR 회귀식은 **선형성** 만을 띄고 있습니다. 하지만 선형성만으로 데이터를 잘 표현하지 못하는 경우가 있기마련입니다. 이런 경우 Kernel trick을 사용하여 문제를 해결합니다. Kernel trick이 무엇인지 알아봅시다.
 
-### Support Vector Regression
+### Support Vector Regression using Kernel Trick
+
+하단의 그림 (C)와 같이 데이터를 잘 표현하기 위해 비선형의 회귀식을 구해야하는 경우 SVR에서는 SVM과 동일하게 Kernel Trick을 사용하여 해결합니다. Kernel trick의 개념은 데이터 관측치들을 더 높은 차원으로 변환시켜 선형으로 표현가능하게 해보자는 것입니다.
+$$
+x = (x_1, x_2, ... x_p) \Rightarrow {\phi}(x) = z = (z)
+$$
+
+<p align="center"><img width="600" height="auto" img src="/images/image_69.png"></p>
 
 ---
 ### 비선형 데이터를 활용한 코드 구현 예시
