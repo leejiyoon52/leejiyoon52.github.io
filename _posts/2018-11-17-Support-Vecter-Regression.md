@@ -99,7 +99,7 @@ $$
 $$
 
 $$
-\\-\sum _{ i=1 }^{ n }{ { \alpha }_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ { \alpha }_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}-{W}^{T}{x}_{i}+b)}
+\\-\sum _{ i=1 }^{ n }{ { \alpha }_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ { \alpha }_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}+{W}^{T}{x}_{i}+b)}
 $$
 
 $$
@@ -130,7 +130,7 @@ $$
 #### Lagrangian Dual Problem
 
  $$
-  { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
+  { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{ \epsilon } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
  $$
 
 
@@ -149,7 +149,35 @@ $$
  \quad W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i }\quad \Rightarrow  \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression }
 $$
 
-대입해보니 처음 SVR의 목적과 같이 회귀식이 구성되는 것을 확인할 수 있었습니다.
+대입해보니 처음 SVR의 목적과 같이 회귀식이 구성되는 것을 확인할 수 있었습니다. 여기서 우리는 현재 ${ \alpha }_{ i }^{ * }$ , ${ \alpha }_{ i }$ , $ x_i $에 대해 알고 있습니다. 그렇지만 아직 $ b $를 구하지 않았습니다.
+
+회귀식을 구성하는 마지막 단계인 $ b $를 구하는 과정을 봅시다.
+$$
+ \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
+ \quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
+$$
+
+ $KKT conditions$ 에 의해 다음
+
+
+$$
+{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \\
+{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \\
+(C- { \alpha }_{i}){\xi}_{i } = 0 \\
+(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \\
+$$
+
+
+$$
+{ \alpha }_{ i }({ \epsilon } + { \xi  } +  )
+ \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
+ \quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
+$$
+
+
+
+
+
 
 ---
 ### 비선형 데이터를 활용한 코드 구현 예시
