@@ -360,8 +360,8 @@ C : cost , E : epsilon , P : degree , S : $${\sigma}$$
 
 <p>
 
-
 * ${\epsilon}$-insensitive loss function
+
 
 ```python
 ## Epsilon - insensitive loss
@@ -374,7 +374,9 @@ def eps_loss(t, c=3, e = 5):
 
 * Laplacian loss function
 
+
 ```python
+
 ## Laplacian loss
 def laplacian_loss(t, c=3):
     return c*abs(t)
@@ -383,6 +385,8 @@ def laplacian_loss(t, c=3):
 <p align="center"><img width="400" height="auto" img src="/images/image_36.png"></p>
 
 * Gaussian_loss loss function
+
+
 
 ```python
 ## Gaussian loss
@@ -394,6 +398,8 @@ def gaussian_loss(t, c=3):
 
 * Huber loss function
 
+
+
 ```python
 ## Hubor loss
 def huber_loss(t, c=3, s=5):
@@ -403,6 +409,8 @@ def huber_loss(t, c=3, s=5):
 <p align="center"><img width="650" height="auto" img src="/images/image_63.png"></p>
 
 * Polynomial loss function
+
+
 
 ```python
 # Polynomial loss
@@ -459,6 +467,7 @@ gamma의 경우 RBF커널함수에서 $$\frac { 1 }{ \sigma^{2} } $$ 과 같은 
 
 ---
 * Appendix : 손실함수들을 quadratic형으로 변환하여 Class로 정의
+
 
 ```python
 ## Quadratic form
