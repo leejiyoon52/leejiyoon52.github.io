@@ -126,7 +126,7 @@ $$
 $$
 
 
-미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier 값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${\alpha}$에 대한 식 Lagrangian dual problem으로 정리합니다.
+미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier ${\alpha}$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${\alpha}$에 대한 식 Lagrangian dual problem으로 정리합니다.
 
 #### Lagrangian Dual Problem
 
@@ -140,7 +140,7 @@ $$
 s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
 $$
 
-Lagrangian dual problem으로 재구성한 결과 ${ \alpha }_{i}$와 ${ \alpha }_{i}^{* }$ 로 이루어져있는 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 최적화 quadratic  optimization을 통해 간편하게 ${ \alpha }_{ i },{ \alpha }_{ i }^{ * }$를 도출할 수 있습니다. 이렇게 구한 값 $W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i }$을 $f(x)= Wx + b$ 에 대입해볼까요?
+Lagrangian dual problem으로 재구성한 결과 ${\alpha}$로 이루어져있는 convex하고, 연속적인 QP(quadratic program)입니다. 따라서 최적화 quadratic  optimization을 통해 간편하게 ${\alpha}$를 도출할 수 있습니다. 이렇게 구한 값을 (2)식에 대입해볼까요?
 
 
 
@@ -158,30 +158,30 @@ $$
 
 $$
 \underbrace{ \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b }_\text{ Regression } \Rightarrow
-\quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv} \tag{1}
+\quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv} \tag{4}
 $$
 
 $KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
 
 
 $$
-{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \tag{2}
+{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \tag{5}
 $$
 
 $$
-{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \tag{3}
+{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \tag{6}
 $$
 
 $$
-(C- { \alpha }_{i}){\xi}_{i } = 0 \tag{4}
+(C- { \alpha }_{i}){\xi}_{i } = 0 \tag{7}
 $$
 
 $$
-(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{5}
+(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{8}
 $$
 
 
-$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x_{sv}$** 이기 때문에, 위의 (2),(3)번 조건에 의해 ${ \alpha }_{i} { \neq } 0$ 아니면(or) ${ \alpha }_{i}^{* }{ \neq } 0$ 입니다. 또한 (4),(5)번 조건에서도 support vector는 튜브 안에 있기 때문에 ${\xi}_{i }$ 와 ${\xi}_{i }^{* }$ 는 0이 됩니다. 따라서 $(C- { \alpha }_{i})$ >0 아니면 (or) $(C- { \alpha }_{i}^{ * })$ >0 이 됩니다. 결론적으로 아래의 조건을 충족하는 $x$만을 (1)식에 대입하게 되면, $b$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $b$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
+$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x_{sv}$** 이기 때문에, 위의 (5),(6)번 조건에 의해 ${ \alpha }_{i} { \neq } 0$ 아니면(or) ${ \alpha }_{i}^{* }{ \neq } 0$ 입니다. 또한 (7),(8)번 조건에서도 support vector는 튜브 안에 있기 때문에 ${\xi}_{i }$ 와 ${\xi}_{i }^{* }$ 는 0이 됩니다. 따라서 $(C- { \alpha }_{i})$ >0 아니면 (or) $(C- { \alpha }_{i}^{ * })$ >0 이 됩니다. 결론적으로 아래의 조건을 충족하는 $x$만을 (4)식에 대입하게 되면, $b$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $b$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
 
 $$
 0<{ \alpha }_{i} <C
