@@ -183,9 +183,11 @@ $b$를 구하기 앞서 회귀식을 구축하는데 사용되는 **support vect
  **support vector는 튜브선을 포함하여 바깥쪽에 예측이 된 $x_{sv}$**  입니다.
 
 이제 진짜 $b$를 구해봅시다.결론적으로 조건$$0<{ \alpha }_{i} <C$$ 와 $$0<{ \alpha }_{i}^{ * } <C$$을 충족하는 $$x_{sv}$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. 즉, 다음과 같이 유도됩니다.
+
 $$
 \quad b = f(x_{sv}) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}_{sv}
 $$
+
 여기서 support vector의 갯수가 많다면 추정된 $$b$$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
 
 
@@ -237,9 +239,7 @@ $$
 \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
 $$
 
-이렇게 구해진 회귀식은 선형으로 수식화했음에도 불구하고, 비선형성을 보여주게됩니다.
-
-
+결과적으로 간편하게 고차원공간으로 매핑하여 비선형적인 회귀식을 도출할 수 있습니다.
 
 
 ---
@@ -319,7 +319,7 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
     return mat
 ```
 
-커널함수만을 변형시켜 회귀계수 추정을 비교해봅시다. 커널함수비교를 위해 손실함수는 epsilon insensitive로, 하이퍼 파라미터는 (epsilon=1, C=0.001, gamma=0.1)로 정의했습니다. 한눈에 보기에도 해당 데이터에는 RBF kernel을 사용한 회귀분석이 가장 적합한 것을 확인할 수 있었습니다. 이처럼 주어진 데이터에 사용하는 커널함수에 따라 feature space의 특징이 달라지기 때문에 데이터 특성에 적합한 커널함수를 결정하는 것은 중요합니다.
+커널함수만을 변형시켜 회귀계수 추정을 비교해봅시다. 커널함수비교를 위해 손실함수는 epsilon insensitive로, 하이퍼 파라미터는 (epsilon=1, C=0.001, gamma=0.1)로 정의했습니다. 한눈에 보기에도 해당 데이터에는 **RBF kernel** 을 사용한 회귀분석이 가장 적합한 것을 확인할 수 있었습니다. 이처럼 주어진 데이터에 사용하는 커널함수에 따라 feature space의 특징이 달라지기 때문에 데이터 특성에 적합한 커널함수를 결정하는 것은 중요합니다.
 
 
 <p align="center"><img width="650" height="auto" img src="/images/image_2.png"></p>
@@ -385,109 +385,35 @@ def Picewise_polynomial_loss(t, c=3, s=5, p=3):
 <p align="center"><img width="650" height="auto" img src="/images/image_65.png"></p>
 <br>
 
-이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 ${\epsilon}$-insensitive 손실함수가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다.
+이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 **${\epsilon}$-insensitive 손실함수** 가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다.
+
 <p align="center"><img width="650" height="auto" img src="/images/results.png"></p>
 
+```python
+
+```
 
 <br />
-#### Loss function hyperparameter
 
-기존의 선형회귀와 가장 큰 관점차이는 손실함수(Loss function)에 Penalty(C)를 부여한다는 점입니다. 종류를 살펴보면 다음과 같이 다양하게 정의되어있습니다.
+#### ${\epsilon}$-insensitive Hyper parameter
 
-
-
-
-
-
-
-
-
-#### Loss function
+생성 데이터에 대해 **RBF kernel** 과 **${\epsilon}$-insensitive 손실함수** 로 모델을 구성한 경우 성능이 좋은 것을 확인할 수 있었습니다. ${\epsilon}$-insensitive 손실함수의 다양한 하이퍼파라미터를 변경하게될 때에는 결과값이 어떻게 바뀌게 될까요? 하이퍼파라미터 C(cost), epsilon, gamma를 바꾸어가며 비교해봅시다.
 
 $$
-\min { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } +C\sum _{ i=1 }^ n {({ \xi  }_{ i }+{\xi}_{i}^* )}
+ L_{SVR} = \min  \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
 $$
 
-$$
-\\s.t. \quad    ({ w }^{ T }{ x }_{ i }+b)-{ y }_{ i }\le {\epsilon}+{ \xi  }_{ i }
-$$
+* Cost 변경 [ 1,0.3,0.1,1e-06 ] ( Epsilon = 0.2 , gamma = 0.1 )
 
-$$
-y_i-(w^Tx_i +b) \le {\epsilon}+{ \xi }_i^*
-$$
+<p align="center"><img width="650" height="auto" img src="/images/image_92.png"></p>
 
-$$
-\\ { \xi  }_{ i }, { \xi  }_{ i }^* \ge {0}
-$$
+Cost는 작아질수록 잘못 예측된 값에 대해 penalty부여를 적게 하기 때문에 실제값과의 차이가 중요하지 않게됩니다. 따라서 회귀계수를 줄이고자하는 $$ \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}$$ 식을 더 비중있게 다루게 됩니다. 따라서 회귀식이 평평해지는 것을 확인할 수 있으며, 예측성능 또한 감소한것을 볼 수 있습니다.
 
+* Epsilon 변경 [ 0.2, 0.6, 1.4, 1.8 ] ( Cost = 1 , gamma = 0.1 )
 
+<p align="center"><img width="650" height="auto" img src="/images/image_91.png"></p>
 
+${\epsilon}$을 키우게 되면, 더 큰 구간 $$2{\epsilon}$$내에서 penalty를 부여하지 않게됩니다. 즉, 노이즈로 인식하고 맞춘셈 치는 값들이 많아지는 것이죠. 결과적으로 회귀식을 구성하는 support vector의 수도 감소하게 되고, 평평한 회귀식을 구상할 수 있게됩니다.
 
-
-#### Primal Lagrangian
-
-
-$$
-{L_{p}} =  { \frac { 1 }{ 2 } { \left\| w \right\|  }^{ 2} } + C\sum _{ i=1 }^{ n }{ ({ \xi  }_{ i }+{\xi}_{i}^* )} - \sum _{ i=1 }^{ n }{ ({ \eta }_{i}{ \xi  }_{ i }+{\eta}_{i}^{* }{\xi}_i^* )}
-$$
-
-$$
-\\-\sum _{ i=1 }^{ n }{ { \alpha }_{i}({ \epsilon }+{\xi}_{i}+{y}_{i}-{W}^{T}{x}_{i}-b)} - \sum _{ i=1 }^{ n }{ { \alpha }_{i}^{*}({ \epsilon }+{\xi}_{i}^* -{y}_{i}-{W}^{T}{x}_{i}+b)}
-$$
-
-$$
- {\alpha}_{i}^* ,{\eta}_{i}^* \ge 0
-$$
-
-
-#### Take a derivative
-
-$$
-\frac { \partial L }{ \partial b }= \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{* })} = 0
-$$
-
-
-$$
-\frac { \partial L }{ \partial W }= W - \sum_{ i=1 }^{ n }{ ({ \alpha }^{ * }-{ \alpha }_{ i })x_i} = 0 \quad \Rightarrow \quad  W = \sum_{ i=1 }^{ n }{ ({ \alpha }^{ * }-{ \alpha }_{ i })x_i}
-$$
-
-
-$$
-\frac { \partial L }{ \partial \xi^{( * )} }= C - ({ \alpha }_{i}^{( * )}-{ \eta }_{ i }^{( * )}) = 0 \quad \Rightarrow \quad C = ({ \alpha }_{i}^{( * )}-{ \eta }_{ i }^{( * )})
-$$
-
-
-#### Dual Lagrangian Problem
-
-$$
- { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {x^{T}_{ i }x_{ j }}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
-$$
-
-
-$$
-s.t.  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }-{ \alpha }_{ i }^{ * }) = 0 ,\quad{ \alpha }_{ i },{ \alpha }_{ i }^{ * }  \in [0,C]
-$$
-
-
-#### Decision function
-
-
-$$
-  \quad W = \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol x_{ i } \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} + b
-$$
-
-
-#### Dual Lagrangian problem with Kernel trick
-
-
-$$
- { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
-$$
-
-
-#### Decision function
-
-
-$$
-  \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
-$$
+* Gamma 변경 [ 0.1, 0.7, 1, 5 ] ( Epsilon = 0.2, Cost = 1 )
+<p align="center"><img width="650" height="auto" img src="/images/image_90.png"></p>
