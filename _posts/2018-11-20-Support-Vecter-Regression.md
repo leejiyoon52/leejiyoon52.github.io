@@ -286,7 +286,7 @@ y[::1] +=1*(0.5-np.random.rand(100))
 #### **2. Kernel function 비교**
 
 
-##### Kernel function
+#### Kernel function
 
 
 앞서 소개했듯이 대표적인 커널함수(kernel function)는 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 하이퍼 파라미터 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 연산을 보다 용이하게 개선할 수 있습니다.
@@ -308,7 +308,7 @@ def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
     return result
 ```
 
-##### Kernel matrix
+#### Kernel matrix
 두 원소값에 대한 스칼라 $K(x_i,x_j)$를 구할 수 있으며, 모든 원소간(Pair-wise) $K$값을 구해 Kernel matrix(Gram matrix)를 도출해야합니다. 최종적으로 도출되는 커널행렬(Kernel matrix)은 **대칭행렬(Symmetric matrix)** 이고, 모든 $K$값이 양수인 **Positive semi-definite 행렬** 이라는 특징을 갖고있습니다. 아래 코드를 통해 앞서 정의한 커널함수에 따른 커널행렬을 구합니다.  
 
 
@@ -354,9 +354,10 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 #### Loss function hyper parameter
 
-각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다.
+각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다. 코드 및 그래프에서 하이퍼파라미터는 다음과 같습니다.
+C : cost , E : epsilon , P : degree , S : ${\sigma}$
 
-${\epsilon}$-insensitive loss function
+* ${\epsilon}$-insensitive loss function
 
 
 ```python
@@ -368,7 +369,7 @@ def eps_loss(t, c=3, e = 5):
 <p align="center"><img width="650" height="auto" img src="/images/image_62.png"></p>
 
 
-Laplacian loss function
+* Laplacian loss function
 
 
 ```python
@@ -381,7 +382,7 @@ def laplacian_loss(t, c=3):
 <p align="center"><img width="400" height="auto" img src="/images/image_36.png"></p>
 
 
-Gaussian loss function
+* Gaussian loss function
 
 
 
@@ -393,7 +394,7 @@ def gaussian_loss(t, c=3):
 
 <p align="center"><img width="400" height="auto" img src="/images/image_37.png"></p>
 
-Huber loss function
+* Huber loss function
 
 
 ```python
@@ -404,7 +405,7 @@ def huber_loss(t, c=3, s=5):
 
 <p align="center"><img width="650" height="auto" img src="/images/image_63.png"></p>
 
-Polynomial loss function
+* Polynomial loss function
 
 
 ```python
@@ -415,7 +416,7 @@ def poly_loss(t, c=3, p=3):
 
 <p align="center"><img width="650" height="auto" img src="/images/image_64.png"></p>
 
-Piecewise loss function
+* Piecewise loss function
 
 ```python
 ## Piecewise polynomial
