@@ -354,7 +354,9 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다. 코드 및 그래프에서 하이퍼파라미터는 다음과 같습니다.
 C : cost , E : epsilon , P : degree , S : $${\sigma}$$
 
+
 <p>
+
 
 * ${\epsilon}$-insensitive loss function
 ```python
@@ -436,6 +438,8 @@ ${\epsilon}$을 키우게 되면, 더 큰 구간 $$2{\epsilon}$$내에서 penalt
 <p align="center"><img width="650" height="auto" img src="/images/image_90.png"></p>
 
 gamma의 경우 RBF커널함수에서 $$\frac { 1 }{ \sigma^{2} } $$ 과 같은 의미이지만, 계산의 용의성을 위해 다르게 표현한 것입니다. gamma는 커널의 폭을 제어하게되는데요, gamma가 클수록 회귀선이 꼬불꼬불해지는 것을 확인할 수 있습니다.
+
+
 
 ---
 * Appendix : 손실함수들을 quadratic형으로 변환
