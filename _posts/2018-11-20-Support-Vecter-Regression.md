@@ -52,7 +52,7 @@ $$
 
 ---
 
-#### **1. Original Problem**
+### **1. Original Problem**
 
 자, 이제 SVR의 손실함수를 ${\epsilon}$-insensitive함수를 사용한 SVR식으로 표현하겠습니다. 그러자 갑자기 식이 엄청 복잡해 보입니다. 그림을 통해 도대체 **${ \epsilon }$**  와 **${ \xi  }$** 가 무엇인지에 대해 알아봅시다.
 
@@ -91,7 +91,7 @@ SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,
 
 <br>
 
-#### **2. Lagrangian Primal problem**
+### **2. Lagrangian Primal problem**
 
 앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 최적화 툴을 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않습니다. 따라서 Lagrangian multiplier를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형함으로써 이런 한계를 극복하게 됩니다. 뿐만 아니라 Lagrangian Primal problem은 추후 소개될 커널함수를 사용하기 용이하도록 수식을 재구성하게되는 이점이 있습니다.
 
@@ -112,7 +112,7 @@ Lagrangian primal problem으로 재구성한 결과 역시 convex하고, 연속�
 
 <br>
 
-#### **3. Take a derivative**
+### **3. Take a derivative**
 
 $$
 \frac { \partial L }{ \partial b }= \boldsymbol{ \sum_{ i=1 }^{ n }{ ({ \alpha }_{ i }-{ \alpha }_{ i }^{ * })} = 0 } \tag{1}
@@ -133,7 +133,7 @@ $$
 
 <br>
 
-#### **4. Lagrangian Dual Problem**
+### **4. Lagrangian Dual Problem**
 
 
 $$
@@ -149,7 +149,7 @@ Lagrangian dual problem으로 재구성한 목적식은 ${\alpha}$로 이루어�
 
 <br>
 
-#### **5. Decision function**
+### **5. Decision function**
 
 
 $$
@@ -204,7 +204,7 @@ $$
 
 <br>
 
-#### **6. Support Vector Regression using Kernel function**
+### **6. Support Vector Regression using Kernel function**
 
 하단의 그림 (E)와 같이 데이터를 잘 표현하기 위해 비선형 회귀식을 구해야하는 경우 SVR에서는  매핑함수(mapping function)를 사용하여 해결합니다. 매핑 함수는 상대적으로 저차원 데이터 관측치들을 더 높은 차원으로 변환시켜 데이터들을 선형으로 표현가능하게 해보자는 것입니다.
 
@@ -226,7 +226,7 @@ $$
 
 <br>
 
-#### **7. Kernel trick**
+### **7. Kernel trick**
 
 그런데 고차원으로 표현하는 과정은 매우 연산량이 큽니다. 데이터를 고차원으로 매핑하고, 데이터 요소끼리 내적해야하기 때문입니다. 다행히도 SVR은 상대적으로 저차원인 원공간에서 내적을 하고, 고차원공간으로 매핑함으로써 간단히 연산할 수 있는 **kernel trick** 을 도입했습니다. 따라서 트릭을 가능하게 하는 커널함수(kernel function)을 사용합니다. 따라서 다시 오랜만에 Lagrangian Dual Problem 목적식 으로 돌아가봅시다.
 
@@ -238,7 +238,7 @@ $$
 
 <br>
 
-#### **8. Dual Lagrangian problem with Kernel trick**
+### **8. Dual Lagrangian problem with Kernel trick**
 
 $$
 { { L }_{ D } =  \frac { 1 }{ 2 } \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })({ \alpha }_{ j }^{ * }-{ \alpha }_{ j }) \boldsymbol {K(x_{ i }x_{ j })}-{\epsilon} \sum_{ i,j=1 }^{ n }({ \alpha }_{ i }^{ * }+{ \alpha }_{ i })+\sum_{ i,j=1 }^{ n }y_{ i }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })}  
@@ -246,7 +246,7 @@ $$
 
 <br>
 
-#### **9. Decision function**
+### **9. Decision function**
 
 $$
 \quad  \sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\Phi(\boldsymbol{x_{ i }}) \quad \Rightarrow \quad f(x)=\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol{K(x_{ i }x_{ j })} + b
@@ -259,13 +259,11 @@ $$
 ---
 ### 비선형 데이터를 활용한 코드 구현 예시
 ---
-
-#### SVR의 각 요소를 비교 및 확인
 SVR의 경우 고려해야하는 Loss function과 Kernel function, 하이퍼파라미터가 다양하게 존재합니다. 따라서 이들을 변화시키며 결과를 확인해보도록 하겠습니다.
 
 <br>
 
-#### **1. 랜덤 데이터 생성**
+### **1. 랜덤 데이터 생성**
 
  삼각함수를 사용하여 비선형성을 갖는 데이터를 생성하고, 일부 난수에 대해 노이즈를 추가해봅시다.
 
@@ -283,10 +281,10 @@ y[::1] +=1*(0.5-np.random.rand(100))
 
 <br>
 
-#### **2. Kernel function 비교**
+### **2. Kernel function 비교**
 
 
-#### Kernel function
+### Kernel function
 
 
 앞서 소개했듯이 대표적인 커널함수(kernel function)는 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 하이퍼 파라미터 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 연산을 보다 용이하게 개선할 수 있습니다.
@@ -308,7 +306,7 @@ def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
     return result
 ```
 
-#### Kernel matrix
+### Kernel matrix
 두 원소값에 대한 스칼라 $K(x_i,x_j)$를 구할 수 있으며, 모든 원소간(Pair-wise) $K$값을 구해 Kernel matrix(Gram matrix)를 도출해야합니다. 최종적으로 도출되는 커널행렬(Kernel matrix)은 **대칭행렬(Symmetric matrix)** 이고, 모든 $K$값이 양수인 **Positive semi-definite 행렬** 이라는 특징을 갖고있습니다. 아래 코드를 통해 앞서 정의한 커널함수에 따른 커널행렬을 구합니다.  
 
 
@@ -344,15 +342,15 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 <br>
 
-#### **3. Loss function 비교**
+### **3. Loss function 비교**
 
-#### Loss function
+### Loss function
 앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다. 특히 piecewise polynomial의 경우 $${\sigma}$$를 경계로 penalty값이 확 오르는게 신기합니다.
 
 <p align="center"><img width="650" height="auto" img src="/images/lossfun.png"></p>
 <p align="center"><img width="650" height="auto" img src="/images/image_3.png"></p>
 
-#### Loss function hyper parameter
+### Loss function hyper parameter
 
 각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다. 코드 및 그래프에서 하이퍼파라미터는 다음과 같습니다.
 C : cost , E : epsilon , P : degree , S : ${\sigma}$
@@ -434,7 +432,7 @@ def Picewise_polynomial_loss(t, c=3, s=5, p=3):
 
 <br>
 
-#### ${\epsilon}$-insensitive Hyper parameter
+### ${\epsilon}$-insensitive Hyper parameter
 
 생성 데이터에 대해 **RBF kernel** 과 **${\epsilon}$-insensitive 손실함수** 로 모델을 구성한 경우 성능이 좋은 것을 확인할 수 있었습니다. ${\epsilon}$-insensitive 손실함수의 다양한 하이퍼파라미터를 변경하게될 때에는 결과값이 어떻게 바뀌게 될까요? 하이퍼파라미터 C(cost), epsilon, gamma를 바꾸어가며 비교해봅시다.
 
