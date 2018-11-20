@@ -13,7 +13,7 @@ image:
 Kernel-based Learning: Support Vector Regression
 =======
 
-해당 포스트에서는 대표적인 분류 알고리즘 SVM에서 소개된 손실함수를 도입하여 회귀식을 구성하는 **SVR(Support Vector Regression)** 에 대해 소개하겠습니다. 고려대학교 강필성 교수님의 Business Analytics강의와 김성범 교수님의 Forecast model강의를 바탕으로 작성하였으며, 코딩 구현에는 `link: https://www.youtube.com/watch?v=zlv2s_mKdb4&index=5&list=PLetSlH8YjIfXHbqJmguPdw1H7BmZPy6SS` 강의를 참고하였습니다.
+해당 포스트에서는 대표적인 분류 알고리즘 SVM에서 소개된 손실함수를 도입하여 회귀식을 구성하는 **SVR(Support Vector Regression)** 에 대해 소개하겠습니다. 고려대학교 강필성 교수님의 Business Analytics강의와 김성범 교수님의 Forecast model강의를 바탕으로 작성하였습니다.
 
 
 ### Regression
@@ -180,8 +180,12 @@ $$
 (C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{8}
 $$
 
+$b$를 구하기 앞서 회귀식을 구축하는데 사용되는 **support vector** 를 구해야합니다. 식(5)와(7)을사용해서 구해보도록 하겠습니다. 먼저 $${ \alpha }_{i} { \neq } 0  $$ 이라면 $$({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0$$을 만족해야합니다. 이를 만족한다는 것은 해당 데이터가 튜브 boundary위에 딱 있음을 의미하는데요, 이경우 튜브 밖으로 나간 값이 없으므로 식(7)의 $${\xi}_{i } = 0$$이라 할 수 있습니다. 그렇게 되면 자연스럽게 $$(C- { \alpha }_{i}){ \neq } 0 $$가 성립합니다. 따라서 이경우는 튜브선 위 혹은 그 밖에 있는 데이터를 의미합니다. 반대로 $${ \alpha }_{i}=0$$ 이라면, $${\xi}_{i } { \neq } 0$$ 라면 $$(C- { \alpha }_{i}) = 0 $$이 되어야 합니다. 그렇게 되면$$C = { \alpha }_{i} = 0 $$가 되어 적합하지 않습니다. 식(6),(8)에서도 동일한 결과를 구할 수 있으며 결과적으로 SVR에서의
+ **support vector는 튜브선을 포함하여 바깥쪽에 예측이 된 $x_{sv}$**  입니다.
 
-$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x_{sv}$** 이기 때문에, 위의 (5),(6)번 조건에 의해 $${ \alpha }_{i} { \neq } 0  \ or \  { \alpha }_{i}^{* }{ \neq } 0$$ 입니다. 또한 (7),(8)번 조건에서도 support vector는 튜브 안에 있기 때문에 $${\xi}_{i } \ or \ {\xi}_{i }^{* } = 0 $$가 됩니다. 따라서 $$ (C- { \alpha }_{i}) >0 \ or \ (C- { \alpha }_{i}^{ * }) >0$$ 이 됩니다. 결론적으로 아래의 조건을 충족하는 $$x$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $$b$$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
+이제 진짜 $b$를 구해봅시다.
+
+결론적으로 아래의 조건을 충족하는 $$x$$만을 (4)식에 대입하게 되면, $$b$$를 구할 수 있게 되는 것이죠. 여기서 support vector의 갯수가 많다면 추정된 $$b$$값의 평균을 구하는 것이 가장 범용적으로 소개된 방법입니다.
 
 $$
 0<{ \alpha }_{i} <C
@@ -266,7 +270,7 @@ y[::1] +=1*(0.5-np.random.rand(100))
 #### **2. Kernel function 비교**
 
 
-#####Kernel function
+##### Kernel function
 
 
 앞서 소개했듯이 대표적인 커널함수(kernel function)는 **(1)Linear kernel (2)Polynomial kernel (3)RBF kernel** 이 있으며, 이들을 구현한 코드는 다음과 같습니다. 코드 상에서 함수의 하이퍼 파라미터 'coef0'는 linear, polynomial, sigmoid kernel에서의 bias값을 의미하며, 'gamma'는 RBF, sigmoid kernel에서 $1/\sigma^2$을 의미합니다. 'gamma'로 치환하므로써 연산을 보다 용이하게 개선할 수 있습니다.
@@ -324,7 +328,7 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 
 #### **3. Loss function 비교**
 
-#### Loss function
+##### Loss function
 앞서 이론설명에서 말했듯, SVR은 ${\epsilon}$-insensitive함수를 제외하고도 다양한 손실함수로 변형하여 사용할 수 있습니다. 익숙한 Gaussian, Polynomial 이외에도 다양한 함수가 존재함을 확인할 수 있습니다.
 
 <p align="center"><img width="650" height="auto" img src="/images/image_4.png"></p>
