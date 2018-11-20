@@ -126,7 +126,7 @@ $$
 $$
 
 
-미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier의 ${ \alpha }_{ i }$와 $({ \alpha }_{ i }^{ * })$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${ \alpha }_{ i }$와 ${ \alpha }_{ i }^{ * }$에 대한 식 Lagrangian dual problem으로 정리합니다.
+미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier ${ \alpha }_{ i }$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${ \alpha }_{ i }$와 ${ \alpha }_{ i }^{ * }$에 대한 식 Lagrangian dual problem으로 정리합니다.
 
 #### Lagrangian Dual Problem
 
