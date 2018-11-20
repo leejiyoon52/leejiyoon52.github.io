@@ -260,6 +260,7 @@ $$
 #### SVR의 각 요소를 비교 및 확인
 SVR의 경우 고려해야하는 Loss function과 Kernel function, 하이퍼파라미터가 다양하게 존재합니다. 따라서 이들을 변화시키며 결과를 확인해보도록 하겠습니다.
 
+<br>
 
 #### **1. 랜덤 데이터 생성**
 
@@ -277,6 +278,7 @@ y[::1] +=1*(0.5-np.random.rand(100))
 생성된 데이터의 개형은 다음과 같습니다. 데이터들이 sin(X)함수를 기준으로 노이즈가 반영되어 적절히 흩어지게 되었습니다. 해당 데이터를 잘 반영하여 새로운 데이터를 잘 예측하는 회귀선을 구하고자 하는 것이 SVR의 목적이라 할 수 있습니다.
 <p align="center"><img width="500" height="auto" img src="/images/image_1.png"></p>
 
+<br>
 
 #### **2. Kernel function 비교**
 
@@ -336,6 +338,8 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 <p align="center"><img width="650" height="auto" img src="/images/image_2.png"></p>
 
 생성 데이터에 적합한 커널함수는 test set의 MSE가 가장 낮은 RBF kernel function이라 할 수 있겠습니다. 그래프를 봐도 가장 적합하게 예측하는게 보이죠.
+
+<br>
 
 #### **3. Loss function 비교**
 
@@ -399,6 +403,8 @@ def Picewise_polynomial_loss(t, c=3, s=5, p=3):
 이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 **${\epsilon}$-insensitive 손실함수** 가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 코드를 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다. 해당 코드는 포스트 뒤에 Appendix에서 다루도록 하겠습니다.
 
 <p align="center"><img width="650" height="auto" img src="/images/results.png"></p>
+
+<br>
 
 #### ${\epsilon}$-insensitive Hyper parameter
 
