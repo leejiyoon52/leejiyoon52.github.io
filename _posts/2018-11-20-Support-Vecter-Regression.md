@@ -165,6 +165,9 @@ $$
 \quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x} \tag{4}
 $$
 
+<br>
+
+
 $KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
 
 
@@ -359,53 +362,66 @@ C : cost , E : epsilon , P : degree , S : $${\sigma}$$
 
 
 * ${\epsilon}$-insensitive loss function
+
 ```python
 ## Epsilon - insensitive loss
 def eps_loss(t, c=3, e = 5):
     return(abs(t)<e)*0* abs(t) +((t)>=e)*c*abs(t-e) +((t)<-e)*c*abs(t+e)
 ```
+
 <p align="center"><img width="650" height="auto" img src="/images/image_62.png"></p>
 
 
 * Laplacian loss function
+
 ```python
 ## Laplacian loss
 def laplacian_loss(t, c=3):
     return c*abs(t)
 ```
+
 <p align="center"><img width="400" height="auto" img src="/images/image_36.png"></p>
 
 * Gaussian_loss loss function
+
 ```python
 ## Gaussian loss
 def gaussian_loss(t, c=3):
     return c*0.5*t**2    
 ```
+
 <p align="center"><img width="400" height="auto" img src="/images/image_37.png"></p>
 
 * Huber loss function
+
 ```python
 ## Hubor loss
 def huber_loss(t, c=3, s=5):
     return c*((abs(t)<s)*(0.5/s)*(t**2) + (abs(t)>=s)*(abs(t)-s/2))
 ```
+
 <p align="center"><img width="650" height="auto" img src="/images/image_63.png"></p>
 
 * Polynomial loss function
+
 ```python
 # Polynomial loss
 def poly_loss(t, c=3, p=3):
     return c*((p**-1)*abs(t)**p)
 ```
+
 <p align="center"><img width="650" height="auto" img src="/images/image_64.png"></p>
 
 * Piecewise loss function
+
 ```python
 ## Piecewise polynomial
 def Picewise_polynomial_loss(t, c=3, s=5, p=3):
     return c*((abs(t)<=s)*((abs(t)**p)/p/(s*(p-1)))+(abs(t)>s)*(abs(t)-(s*(p-1))/p))  
 ```
+
 <p align="center"><img width="650" height="auto" img src="/images/image_65.png"></p>
+
 <br>
 
 이전에 생성한 랜덤데이터에는 어떤 loss function이 가장 MSE기준으로 좋은 성능을 보이는지 확인해봅시다. 아래 그래프에서 확인할 수 있듯이 **${\epsilon}$-insensitive 손실함수** 가 가장 좋은 성능을 보임을 확인할 수 있었습니다. 이 때 최적화 solver로 풀이가능하도록 코드를 각 손실함수들을 quadratic형으로 변환하여 작성해야합니다. 해당 코드는 포스트 뒤에 Appendix에서 다루도록 하겠습니다.
@@ -419,7 +435,7 @@ def Picewise_polynomial_loss(t, c=3, s=5, p=3):
 생성 데이터에 대해 **RBF kernel** 과 **${\epsilon}$-insensitive 손실함수** 로 모델을 구성한 경우 성능이 좋은 것을 확인할 수 있었습니다. ${\epsilon}$-insensitive 손실함수의 다양한 하이퍼파라미터를 변경하게될 때에는 결과값이 어떻게 바뀌게 될까요? 하이퍼파라미터 C(cost), epsilon, gamma를 바꾸어가며 비교해봅시다.
 
 $$
- L_{SVR} = \min  \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
+L_{SVR} = \min  \overbrace { { \left\| w \right\| }^{ 2} } ^{\text {Robustness}}+ {\lambda}\underbrace{  (\frac { 1 }{ 2 } \sum _{ i=1 }^ n {({ y }_{i} - { f(x_{i}) } )^2)}}_\text{ loss funciton }
 $$
 
 * Cost 변경 [ 1,0.3,0.1,1e-06 ] ( Epsilon = 0.2 , gamma = 0.1 )
@@ -442,7 +458,7 @@ gamma의 경우 RBF커널함수에서 $$\frac { 1 }{ \sigma^{2} } $$ 과 같은 
 
 
 ---
-* Appendix : 손실함수들을 quadratic형으로 변환
+* Appendix : 손실함수들을 quadratic형으로 변환하여 Class로 정의
 
 ```python
 ## Quadratic form
