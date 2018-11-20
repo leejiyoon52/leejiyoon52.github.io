@@ -91,7 +91,7 @@ SVR은 회귀식이 추정되면 회귀식 위아래 2${ \epsilon } (- \epsilon,
 
 #### Lagrangian Primal problem
 
-앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier ${ \alpha }_{i}^{* }$와 ${ \eta }_{i}^{* }$를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
+앞서 목적식과 4개의 제약식을 갖춘 original problem을 정의했습니다. 이는 QP(quadratic program)로 바로 optimization solver를 사용해 풀이할 수 있지만, 4개나 되는 제약식을 모두 만족시키며 푸는 것은 쉽지 않을 뿐더러 추후 소개될 커널함수를 사용하게 되면 연산이 굉장히 복잡해지게 됩니다. 따라서 Lagrangian multiplier ${ \alpha }_{i}^{ * }$와 ${ \eta }_{i}^{ * }$를 사용하여 제약이 있는 문제를 아래와 같이 제약이 없는 Lagrangian Primal problem으로 변형합니다.
 
 
 $$
@@ -126,7 +126,7 @@ $$
 $$
 
 
-미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier ${ \alpha }_{i}$와 ${\alpha }_{i}^{ * }$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${ \alpha }_{i}$와 ${ \alpha }_{i}^{ * }$에 대한 식 Lagrangian dual problem으로 정리합니다.
+미지수의 미분 값이 0일때 3개의 조건(1),(2),(3)을 얻게 됩니다. 이 과정에서 바로 $ W $와 $ b $ 값을 구했다면 좋았을 텐데, Lagrangian multiplier ${ \alpha }_{i}$와 ${{\alpha }_{i}^{ * }}$값을 여전히 모르기 때문에 바로 구할 수 는 없습니다. 따라서 미분을 통해 얻은 세가지 조건을 Lagrangian Primal problem 목적식에 대입하여 ${ \alpha }_{i}$와 ${ \alpha }_{i}^{ * }$에 대한 식 Lagrangian dual problem으로 정리합니다.
 
 #### Lagrangian Dual Problem
 
