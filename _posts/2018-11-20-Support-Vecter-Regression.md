@@ -307,7 +307,7 @@ def kernel_f(xi, xj, kernel = None, coef0=1.0, degree=3, gamma=0.1):
 
     return result
 ```
-<br />
+
 ##### Kernel matrix
 두 원소값에 대한 스칼라 $K(x_i,x_j)$를 구할 수 있으며, 모든 원소간(Pair-wise) $K$값을 구해 Kernel matrix(Gram matrix)를 도출해야합니다. 최종적으로 도출되는 커널행렬(Kernel matrix)은 **대칭행렬(Symmetric matrix)** 이고, 모든 $K$값이 양수인 **Positive semi-definite 행렬** 이라는 특징을 갖고있습니다. 아래 코드를 통해 앞서 정의한 커널함수에 따른 커널행렬을 구합니다.  
 
@@ -355,8 +355,6 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 #### Loss function hyper parameter
 
 각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다.
-
-<p>
 
 ${\epsilon}$-insensitive loss function
 
