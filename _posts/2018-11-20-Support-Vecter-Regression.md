@@ -355,7 +355,7 @@ def kernel_matrix(X, kernel, coef0=1.0, degree=3, gamma=0.1):
 #### Loss function hyper parameter
 
 각 손실함수를 구현하는 코드와 함께 손실함수의 파라미터 변화에 따라 loss값의 개형이 어떻게 변하는지 각각 비교해봅시다. 코드 및 그래프에서 하이퍼파라미터는 다음과 같습니다.
-C : cost , E : epsilon , P : degree , S : ${\sigma}$
+C : cost , E : epsilon , P : degree , S : ${\sigma}$ 으로 정의되었다.
 
 
 <p>
@@ -385,7 +385,7 @@ def laplacian_loss(t, c=3):
 <p align="center"><img width="400" height="auto" img src="/images/image_36.png"></p>
 
 
-Gaussian_loss loss function
+Gaussian loss function
 
 
 
@@ -400,7 +400,6 @@ def gaussian_loss(t, c=3):
 Huber loss function
 
 
-
 ```python
 ## Hubor loss
 def huber_loss(t, c=3, s=5):
@@ -410,7 +409,6 @@ def huber_loss(t, c=3, s=5):
 <p align="center"><img width="650" height="auto" img src="/images/image_63.png"></p>
 
 Polynomial loss function
-
 
 
 ```python
