@@ -360,7 +360,7 @@ C : cost , E : epsilon , P : degree , S : ${\sigma}$
 
 <p>
 
-* ${\epsilon}$-insensitive loss function
+${\epsilon}$-insensitive loss function
 
 
 ```python
@@ -372,7 +372,7 @@ def eps_loss(t, c=3, e = 5):
 <p align="center"><img width="650" height="auto" img src="/images/image_62.png"></p>
 
 
-* Laplacian loss function
+Laplacian loss function
 
 
 ```python
@@ -384,7 +384,8 @@ def laplacian_loss(t, c=3):
 
 <p align="center"><img width="400" height="auto" img src="/images/image_36.png"></p>
 
-* Gaussian_loss loss function
+
+Gaussian_loss loss function
 
 
 
@@ -396,7 +397,7 @@ def gaussian_loss(t, c=3):
 
 <p align="center"><img width="400" height="auto" img src="/images/image_37.png"></p>
 
-* Huber loss function
+Huber loss function
 
 
 
@@ -408,7 +409,7 @@ def huber_loss(t, c=3, s=5):
 
 <p align="center"><img width="650" height="auto" img src="/images/image_63.png"></p>
 
-* Polynomial loss function
+Polynomial loss function
 
 
 
@@ -420,7 +421,7 @@ def poly_loss(t, c=3, p=3):
 
 <p align="center"><img width="650" height="auto" img src="/images/image_64.png"></p>
 
-* Piecewise loss function
+Piecewise loss function
 
 ```python
 ## Piecewise polynomial
