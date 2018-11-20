@@ -157,15 +157,26 @@ $$
  \quad b = f(x) -\sum_{ i=1 }^{ n }({ \alpha }_{ i }^{ * }-{ \alpha }_{ i })\boldsymbol {x^{T}_{ i }}\boldsymbol {x}
 $$
 
- $KKT conditions$ 에 의해 다음
+ $KKT conditions$ 에 의해 다음과 같은 식을 도출할 수 있습니다. (Complementary slackness 조건)
 
 
 $$
-{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \\
-{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \\
-(C- { \alpha }_{i}){\xi}_{i } = 0 \\
-(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \\
+{ \alpha }_{i} ({ \epsilon }+{\xi}_{i} + {y}_{i}-{W}^{T}{x}_{i}-b) = 0 \tag{1}
 $$
+
+$$
+{ \alpha }_{i}^{* }({ \epsilon }+{\xi}_{i }^* -{y}_{i}+{W}^{T}{x}_{i}+b) = 0 \tag{2}
+$$
+
+$$
+(C- { \alpha }_{i}){\xi}_{i } = 0 \tag{3}
+$$
+
+$$
+(C- { \alpha }_{i}^{* }){\xi}_{i }^{* } = 0 \tag{4}
+$$
+
+$b$를 구하기 위해 사용되는 **support vector는 튜브 안에 예측이 된 $x$** 이기 때문에, 위의 (1),(2)번 조건에 의해 $ { \alpha }_{i} { \neq } 0 $ 아니면(or) $ { \alpha }_{i}^{* }{ \neq } 0 $ 입니다. 또한 (3),(4)번 조건에서도 support vector는 튜브 안에 있기 때문에 $ {\xi}_{i } $ 와 $ {\xi}_{i }^{* } $ 는 0이 됩니다. 따라서 $ (C- { \alpha }_{i}) $ >0 아니면 (or) $ (C- { \alpha }_{i}^{ * }) $ >0 이 됩니다.
 
 
 $$
